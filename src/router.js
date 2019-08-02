@@ -4,7 +4,7 @@ import Home from './views/Home.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -12,6 +12,16 @@ export default new Router({
       path: '/',
       name: 'home',
       component: Home
+    },
+    {
+      path: '/signin',
+      name: 'signin',
+      component: () => import('./views/SignIn.vue')
+    },
+    {
+      path: '/category',
+      name: 'category',
+      component: () => import('./views/Category.vue')
     },
     {
       path: '/about',
@@ -23,3 +33,12 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  // if (store.state.firebaseLoaded) {
+  //   next()
+  // }
+  next()
+})
+
+export default router
