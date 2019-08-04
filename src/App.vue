@@ -108,6 +108,7 @@ export default {
     drawer: false,
     menus: [
       { title: 'Home', to: '/' },
+      { title: 'Daily', to: '/daily' },
       { title: 'Category Settings', to: '/category' }
     ]
   }),

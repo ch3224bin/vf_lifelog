@@ -24,6 +24,11 @@ const router = new Router({
       component: () => import('./views/Category.vue')
     },
     {
+      path: '/daily',
+      name: 'daily',
+      component: () => import('./views/Daily.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

@@ -13,3 +13,12 @@ Vue.toasted.register('okay', (payload) => {
   duration: 3000,
   className: 'success'
 })
+
+Vue.toasted.register('info', (payload) => {
+  return payload
+}, {
+  icon: 'mdi-information-outline',
+  position: 'bottom-center',
+  duration: 3000,
+  className: 'info'
+})

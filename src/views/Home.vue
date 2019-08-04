@@ -20,7 +20,11 @@
       <v-flex xs12 sm10 md8 lg8 xl6>
         <v-card>
           <v-card-title>
-            History
+            <v-toolbar flat>
+              <v-toolbar-title>History</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-btn icon @click="getData"><v-icon>mdi-refresh</v-icon></v-btn>
+            </v-toolbar>
           </v-card-title>
           <v-card-text>
             <v-list two-line subheader>
@@ -86,6 +90,7 @@ export default {
     initCategories () {
       this.categories = JSON.parse(localStorage.getItem('categories'))
       if (!this.categories) {
+        this.$toasted.global.info('카테고리를 설정해 주세요.')
         router.push('/category')
       }
     },
@@ -129,7 +134,7 @@ export default {
       }
       // 카테로리 별 event list를 가져와서 합치고 정렬한다.
       from(this.categories).pipe(
-        mergeMap(c => this.getEventsList(c.id, this.currentDate)),
+        mergeMap(c => this.getEventsList(c.id, { minDate: new Date('2019-07-01') })),
         map(res => res.result.items),
         reduce((a, b) => a.concat(b))
       ).subscribe(r => {
