@@ -30,7 +30,12 @@
                   <v-list dense>
                     <v-list-item  v-for="subItem in item.subItems" :key="subItem.name">
                       <v-list-item-content class="subtitle-1">{{ subItem.name }}</v-list-item-content>
-                      <v-list-item-content class="align-end">{{ getHourMinString(subItem.val) }}</v-list-item-content>
+                      <v-list-item-content class="align-end">{{ getMinString(subItem.val) }}</v-list-item-content>
+                    </v-list-item>
+                    <v-divider></v-divider>
+                    <v-list-item >
+                      <v-list-item-content class="subtitle-1">총</v-list-item-content>
+                      <v-list-item-content class="align-end">{{ getTotal(item) }}</v-list-item-content>
                     </v-list-item>
                   </v-list>
                 </v-card>
@@ -77,8 +82,16 @@ export default {
       }
       return ''
     },
-    getHourMinString (mills) {
+    getMinString (mills) {
       return `${Math.round(mills / (1000 * 60))} 분`
+    },
+    getTotal (item) {
+      let mills = 0
+      item.subItems.forEach(e => {
+        mills += e.val
+      })
+      let min = Math.round(mills / (1000 * 60))
+      return `${Math.floor(min / 60)}시간 ${min % 60}분`
     },
     loadData () {
       let minDate = new Date(this.date.toDateString())

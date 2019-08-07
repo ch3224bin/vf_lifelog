@@ -1,29 +1,26 @@
-# vf-lifelog
+# 프로젝트명
+> Vue.js로 만든 라이프로그
 
-## Project setup
-```
-yarn install
-```
+# 프로젝트 내용
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+# setup
 
-### Compiles and minifies for production
-```
-yarn run build
+## dependecies install
+
+```bash
+$ yarn
 ```
 
-### Run your tests
+**./google.api.config.js**  
+```javascript
+export default {
+  // Client ID and API key from the Developer Console
+  clientId: '<YOUR_CLIENT_ID>',
+  apiKey: '<YOUR_API_KEY>',
+  // Array of API discovery doc URLs for APIs used by the quickstart
+  discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
+  // Authorization scopes required by the API; multiple scopes can be
+  // included, separated by spaces.
+  scope: 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events'
+}
 ```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

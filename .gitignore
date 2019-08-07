@@ -20,9 +20,12 @@ yarn-error.log*
 *.sln
 *.sw?
 
+# firebase
 .firebase
 .firebaserc
 firebase.json
 
 # google api
 google.api.config.js
+
+public/privacy.html
