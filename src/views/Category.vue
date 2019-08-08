@@ -55,10 +55,12 @@ export default {
         })
 
         let storedCategories = JSON.parse(localStorage.getItem('categories'))
-        storedCategories.forEach(e => {
-          let item = this.$_.find(categories, x => x.id === e.id)
-          item.enabled = true
-        })
+        if (storedCategories) {
+          storedCategories.forEach(e => {
+            let item = this.$_.find(categories, x => x.id === e.id)
+            item.enabled = true
+          })
+        }
 
         this.categories = categories
       })
