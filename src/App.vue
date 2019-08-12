@@ -65,35 +65,13 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" @click="logout">로그아웃</v-btn>
+              <v-btn color="primary" @click="logout">Sign Out</v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
-        <v-btn v-else color="lime darken-4" @click="login" small text outlined>로그인</v-btn>
+        <v-btn v-else color="lime darken-4" @click="login" small text outlined>Sign In</v-btn>
       </v-toolbar-items>
     </v-app-bar>
-
-    <v-dialog
-      v-model="dialog"
-      hide-overlay
-      persistent
-      width="300"
-    >
-      <v-card
-        color="primary"
-        dark
-      >
-        <v-card-text>
-          Please stand by
-          <v-progress-linear
-            indeterminate
-            color="white"
-            class="mb-0"
-          ></v-progress-linear>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-
     <v-content>
       <router-view/>
     </v-content>
@@ -106,6 +84,7 @@ export default {
   data: () => ({
     dialog: false,
     drawer: false,
+    langs: [{ id: 'ko', text: 'Koean' }, { id: 'en', text: 'English' }],
     menus: [
       { title: 'Home', to: '/' },
       { title: 'Daily', to: '/daily' },

@@ -4,7 +4,7 @@
       <v-flex xs12 sm10 md8 lg8 xl6>
         <v-card>
           <v-card-title primary-title>
-            LifeLog에서 사용할 항목을 선택합니다.
+            Select calendars you want to use in LifeLog.
           </v-card-title>
           <v-card-text>
             <v-list subheader>
@@ -26,10 +26,43 @@
                 ></v-divider>
               </template>
             </v-list>
+            <v-btn
+              absolute
+              dark
+              fab
+              bottom
+              right
+              color="primary"
+              @click="openAddCalendar"
+            >
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
           </v-card-text>
         </v-card>
       </v-flex>
     </v-layout>
+    <v-dialog v-model="dialog" persistent max-width="290">
+      <v-card>
+        <v-card-title class="headline">Add Calendar</v-card-title>
+        <v-card-text>
+          <v-form ref="form" v-model="calendar.valid">
+              <v-text-field
+                v-model="calendar.summary"
+                label="Summary"
+              ></v-text-field>
+              <v-text-field
+                v-model="calendar.description"
+                label="Description"
+              ></v-text-field>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="clearAdd">Cancel</v-btn>
+          <v-btn color="green darken-1" text @click="addCalendar">Add</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -76,11 +109,28 @@ export default {
         this.$_.remove(categories, e => e.id === item.id)
       }
       localStorage.setItem('categories', JSON.stringify(categories))
+    },
+    openAddCalendar () {
+      this.dialog = true
+    },
+    addCalendar () {
+      this.$gapi.client.calendar.calendars.insert(this.calendar)
+        .execute((c) => {
+          this.$toasted.global.okay('Added.')
+          this.initCategories()
+          this.clearAdd()
+        })
+    },
+    clearAdd () {
+      this.calendar = { valid: false, summary: '', description: '' }
+      this.dialog = false
     }
   },
   data () {
     return {
-      categories: ''
+      categories: '',
+      dialog: false,
+      calendar: { valid: false, summary: '', description: '' }
     }
   }
 }

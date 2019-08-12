@@ -4,11 +4,11 @@
       <v-flex xs12 sm10 md8 xl6>
         <v-card>
           <v-card-title primary-title>
-            로그인
+            Sign In
           </v-card-title>
           <v-card-actions class="justify-center">
               <v-btn @click="signIn" text outlined>
-                <span class="sign-up-text">Google 계정으로 로그인</span>
+                <span class="sign-up-text">Sign in with Google</span>
               </v-btn>
           </v-card-actions>
         </v-card>
@@ -19,7 +19,7 @@
 
 <style>
 .sign-up-text {
-    background-image: url(/google-logo-color-vflpJqkMT.svg);
+    background-image: url(/google-logo.svg);
     background-repeat: no-repeat;
     background-position: left center;
     background-size: 20px 20px;

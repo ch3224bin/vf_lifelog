@@ -5,14 +5,14 @@
         <v-form ref="form" v-model="valid">
           <v-card>
             <v-card-text>
-              <v-select :rules="[v => !!v || 'Category is required']" :items="categories" item-text="summary" item-value="id" v-model="category" label="항목" required></v-select>
-              <v-text-field v-model="title" label="제목"></v-text-field>
-              <v-textarea v-model="content" label="내용" rows="3"></v-textarea>
+              <v-select :rules="[v => !!v || 'Calendar is required']" :items="categories" item-text="summary" item-value="id" v-model="category" label="Calendar" required></v-select>
+              <v-text-field v-model="title" label="Title"></v-text-field>
+              <v-textarea v-model="content" label="Content" rows="3"></v-textarea>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="success" v-if="!progressData" :disabled="!valid" @click="start"><v-icon>mdi-alarm</v-icon> 시작</v-btn>
-              <v-btn color="success" v-if="progressData" :disabled="!valid" @click="finish"><v-icon>mdi-alarm-check</v-icon> 종료</v-btn>
+              <v-btn color="success" v-if="!progressData" :disabled="!valid" @click="start"><v-icon>mdi-alarm</v-icon> Start</v-btn>
+              <v-btn color="success" v-if="progressData" :disabled="!valid" @click="finish"><v-icon>mdi-alarm-check</v-icon> Finish</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -43,7 +43,7 @@
                     </v-list-item-content>
                     <v-list-item-action>
                       <v-list-item-action-text v-text="getMinTime(item)"></v-list-item-action-text>
-                      <v-btn icon><v-icon>mdi-settings</v-icon></v-btn>
+                      <v-btn icon @click="modify(item)"><v-icon>mdi-settings</v-icon></v-btn>
                     </v-list-item-action>
                   </v-list-item>
                   <v-divider
@@ -57,6 +57,28 @@
         </v-card>
       </v-flex>
     </v-layout>
+
+    <v-dialog v-model="dialog" persistent max-width="290">
+      <v-card>
+        <v-card-title class="headline">Modify</v-card-title>
+        <v-card-text>
+          <v-form ref="form" v-model="mod.valid">
+              <v-text-field
+                v-model="mod.startTime"
+                label="Start Date Time"
+                type="datetime-local"
+              ></v-text-field>
+              <v-text-field v-model="mod.title" label="Title"></v-text-field>
+              <v-textarea v-model="mod.content" label="Content" rows="3"></v-textarea>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="test">Cancel</v-btn>
+          <v-btn color="green darken-1" text @click="dialog = false">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -90,7 +112,7 @@ export default {
     initCategories () {
       this.categories = JSON.parse(localStorage.getItem('categories'))
       if (!this.categories) {
-        this.$toasted.global.info('카테고리를 설정해 주세요.')
+        this.$toasted.global.info('Please select calendars.')
         router.push('/category')
       }
     },
@@ -120,7 +142,7 @@ export default {
         this.progressData = ''
         this.title = this.content = ''
         localStorage.removeItem('progress_data')
-        this.$toasted.global.okay('저장되었습니다.')
+        this.$toasted.global.okay('Saved.')
       })
     },
     /* 이벤트 기록 가져오기 */
@@ -151,7 +173,13 @@ export default {
       let startTime = new Date(item.start.dateTime)
       let endTime = new Date(item.end.dateTime)
       let min = Math.round((endTime - startTime) / (1000 * 60))
-      return `총 ${min}분`
+      return `Total: ${min}Min`
+    },
+    modify (item) {
+      this.dialog = true
+    },
+    test (item) {
+      console.log(this.mod.startTime)
     }
   },
   data () {
@@ -163,7 +191,9 @@ export default {
       valid: false,
       categories: '',
       events: '',
-      currentDate: new Date()
+      currentDate: new Date(),
+      dialog: false,
+      mod: { valid: false, title: '', content: '', startTime: '2019-08-09T12:01', endTime: '' }
     }
   }
 }

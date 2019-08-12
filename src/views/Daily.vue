@@ -4,7 +4,7 @@
       <v-flex xs12 sm10 md8 lg8 xl6>
         <v-card>
           <v-card-title primary-title>
-            일일통계
+            Daily statistics
           </v-card-title>
           <v-card-text>
             <v-layout row wrap>
@@ -12,7 +12,7 @@
                 <datepicker v-model="date" name="date" format="yyyy년 MM월 dd일" class="title"></datepicker>
               </v-flex>
               <v-flex xs6 sm4 md4 lg3>
-                <v-btn color="primary" @click="loadData">검색</v-btn>
+                <v-btn color="primary" @click="loadData">Search</v-btn>
               </v-flex>
             </v-layout>
             <v-layout wrap>
@@ -34,7 +34,7 @@
                     </v-list-item>
                     <v-divider></v-divider>
                     <v-list-item >
-                      <v-list-item-content class="subtitle-1">총</v-list-item-content>
+                      <v-list-item-content class="subtitle-1">Total: </v-list-item-content>
                       <v-list-item-content class="align-end">{{ getTotal(item) }}</v-list-item-content>
                     </v-list-item>
                   </v-list>
@@ -83,7 +83,7 @@ export default {
       return ''
     },
     getMinString (mills) {
-      return `${Math.round(mills / (1000 * 60))} 분`
+      return `${Math.round(mills / (1000 * 60))} Minute`
     },
     getTotal (item) {
       let mills = 0
@@ -91,7 +91,7 @@ export default {
         mills += e.val
       })
       let min = Math.round(mills / (1000 * 60))
-      return `${Math.floor(min / 60)}시간 ${min % 60}분`
+      return `${Math.floor(min / 60)}Hour ${min % 60}Minute`
     },
     loadData () {
       let minDate = new Date(this.date.toDateString())
