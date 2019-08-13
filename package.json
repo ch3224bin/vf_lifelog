@@ -14,7 +14,6 @@
     "rxjs": "^6.5.2",
     "vue": "^2.6.10",
     "vue-gapi": "^0.0.10",
-    "vue-i18n": "^8.13.0",
     "vue-router": "^3.0.3",
     "vue-toasted": "^1.1.27",
     "vuejs-datepicker": "^1.6.2",

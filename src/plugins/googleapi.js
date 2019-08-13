@@ -1,5 +1,4 @@
 import Vue from 'vue'
-// import VueGoogleApi from 'vue-google-api'
 import VueGAPI from 'vue-gapi'
 import GoogleApiConfig from '../google.api.config'
 import store from '../store'
@@ -21,6 +20,7 @@ let updateSigninStatus = (isSignedIn) => {
     store.commit('setUser', user)
   }
   store.commit('setSingIn', isSignedIn)
+  store.commit('setGapiLoaded', true)
 }
 
 Vue.prototype.$getGapiClient()

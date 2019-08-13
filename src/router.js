@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import store from './store'
 
 Vue.use(Router)
 
@@ -39,11 +40,23 @@ const router = new Router({
   ]
 })
 
+const waitGapiLoad = () => {
+  return new Promise((resolve, reject) => {
+    let cnt = 0
+    const tmr = setInterval(() => {
+      if (store.state.gapiLoaded) {
+        clearInterval(tmr)
+        resolve()
+      } else if (cnt++ > 500) reject(Error('제한 시간 초과, 인터넷 연결을 확인하세요'))
+    }, 10)
+  })
+}
+
 router.beforeEach((to, from, next) => {
-  // if (store.state.firebaseLoaded) {
-  //   next()
-  // }
-  next()
+  // Vue.prototype.$Progress.start()
+  waitGapiLoad()
+    .then(() => next())
+    .catch(e => console.log(e.message))
 })
 
 export default router

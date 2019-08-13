@@ -52,7 +52,7 @@
                   ></v-divider>
                 </template>
             </v-list>
-            <v-btn outlined block color="lime">More</v-btn>
+            <v-btn outlined block color="lime">Read more</v-btn>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -147,10 +147,6 @@ export default {
     },
     /* 이벤트 기록 가져오기 */
     getData () {
-      if (!this.$gapi || !this.$gapi.client || !this.$gapi.client.calendar) {
-        setTimeout(this.getData, 100)
-        return
-      }
       if (!this.$store.state.isSignIn) {
         return
       }

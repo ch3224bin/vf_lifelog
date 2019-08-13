@@ -76,8 +76,7 @@ export default {
   },
   methods: {
     initCategories () {
-      if (!this.$gapi || !this.$gapi.client || !this.$gapi.client.calendar) {
-        setTimeout(this.initCategories, 100)
+      if (!this.$store.state.isSignIn) {
         return
       }
       let categories = this.getCategories()

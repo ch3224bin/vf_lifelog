@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
-    isSignIn: false
+    isSignIn: false,
+    gapiLoaded: false
   },
   mutations: {
     setUser (state, user) {
@@ -14,6 +15,9 @@ export default new Vuex.Store({
     },
     setSingIn (state, isSignIn) {
       state.isSignIn = isSignIn
+    },
+    setGapiLoaded (state, gapiLoaded) {
+      state.gapiLoaded = gapiLoaded
     }
   },
   actions: {
