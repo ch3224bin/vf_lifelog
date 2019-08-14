@@ -6,6 +6,7 @@ import vuetify from './plugins/vuetify'
 import './plugins/googleapi'
 import './plugins/vue-toasted'
 import './plugins/lodash'
+import './plugins/vue-progressbar'
 
 Vue.config.productionTip = false
 
