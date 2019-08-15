@@ -4,6 +4,11 @@
 # 프로젝트 내용
 
 # setup
+## Google Calendar API 권한이 필요합니다.
+- https://www.googleapis.com/auth/calendar.readonly
+- https://www.googleapis.com/auth/calendar
+- https://www.googleapis.com/auth/calendar.events.readonly'
+- https://www.googleapis.com/auth/calendar.events'
 
 ## dependecies install
 

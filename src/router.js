@@ -53,10 +53,14 @@ const waitGapiLoad = () => {
 }
 
 router.beforeEach((to, from, next) => {
-  // Vue.prototype.$Progress.start()
+  Vue.prototype.$Progress.start()
   waitGapiLoad()
     .then(() => next())
     .catch(e => console.log(e.message))
+})
+
+router.afterEach((to, from) => {
+  Vue.prototype.$Progress.finish()
 })
 
 export default router
