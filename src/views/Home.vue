@@ -23,7 +23,7 @@
             <v-toolbar flat>
               <v-toolbar-title>History</v-toolbar-title>
               <v-spacer></v-spacer>
-              <v-btn icon @click="getData"><v-icon>mdi-refresh</v-icon></v-btn>
+              <v-btn icon @click="refreshData"><v-icon>mdi-refresh</v-icon></v-btn>
             </v-toolbar>
           </v-card-title>
           <v-card-text>
@@ -52,7 +52,7 @@
                   ></v-divider>
                 </template>
             </v-list>
-            <v-btn outlined block color="lime">Read more</v-btn>
+            <v-btn outlined block color="lime" @click="readMore">Read more</v-btn>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -88,13 +88,15 @@ import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
 import router from '@/router'
 
+const ONE_DAY = 1000 * 60 * 60 * 24
+
 export default {
   mixins: [gooleapiMixin],
   created () {
     this.initCategories()
   },
   mounted () {
-    this.getData()
+    this.refreshData()
     this.initForm()
   },
   methods: {
@@ -146,17 +148,32 @@ export default {
       })
     },
     /* 이벤트 기록 가져오기 */
+    refreshData () {
+      this.minDate = new Date(this.currentDate.getTime() - (ONE_DAY * 7))
+      this.maxDate = new Date(this.currentDate.getTime() + ONE_DAY)
+      this.events = null
+      this.getData()
+    },
+    readMore () {
+      this.maxDate = this.minDate
+      this.minDate = new Date(this.minDate.getTime() - (ONE_DAY * 7))
+      this.getData()
+    },
     getData () {
       if (!this.$store.state.isSignIn) {
         return
       }
       // 카테로리 별 event list를 가져와서 합치고 정렬한다.
       from(this.categories).pipe(
-        mergeMap(c => this.getEventsList(c.id, { minDate: new Date('2019-07-01') })),
+        mergeMap(c => this.getEventsList(c.id, { minDate: this.minDate, maxDate: this.maxDate })),
         map(res => res.result.items),
         reduce((a, b) => a.concat(b))
       ).subscribe(r => {
-        this.events = this.$_.orderBy(r, ['start.dateTime'], 'desc')
+        if (this.events === null) {
+          this.events = this.$_.orderBy(r, ['start.dateTime'], 'desc')
+        } else {
+          this.events = this.events.concat(this.$_.orderBy(r, ['start.dateTime'], 'desc'))
+        }
       })
     },
     /* 시간 표시 */
@@ -186,8 +203,10 @@ export default {
       progressData: '',
       valid: false,
       categories: '',
-      events: '',
-      currentDate: new Date(),
+      events: null,
+      currentDate: new Date(new Date().toDateString()),
+      minDate: null,
+      maxDate: null,
       dialog: false,
       mod: { valid: false, title: '', content: '', startTime: '2019-08-09T12:01', endTime: '' }
     }
