@@ -88,7 +88,8 @@ export default {
     menus: [
       { title: 'Home', to: '/' },
       { title: 'Daily', to: '/daily' },
-      { title: 'Category Settings', to: '/category' }
+      { title: 'Category Settings', to: '/category' },
+      { title: 'About', to: '/about' }
     ]
   }),
   methods: {

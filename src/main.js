@@ -3,10 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
-import './plugins/googleapi'
-import './plugins/vue-toasted'
-import './plugins/lodash'
-import './plugins/vue-progressbar'
+import './plugins'
 
 Vue.config.productionTip = false
 

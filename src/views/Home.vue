@@ -39,11 +39,11 @@
                       <v-list-item-subtitle v-text="getDateTime(item)"></v-list-item-subtitle>
                       <v-list-item-title v-text="item.organizer.displayName"></v-list-item-title>
                       <v-list-item-subtitle class="text--primary" v-text="item.summary"></v-list-item-subtitle>
-                      <v-list-item-subtitle><pre>{{ item.description }}</pre></v-list-item-subtitle>
+                      <v-list-item-subtitle><p v-html="mdToHtml(item.description)"></p></v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>
                       <v-list-item-action-text v-text="getMinTime(item)"></v-list-item-action-text>
-                      <v-btn icon @click="modify(item)"><v-icon>mdi-settings</v-icon></v-btn>
+                      <v-btn icon @click="openModifyPopup(item)"><v-icon>mdi-settings</v-icon></v-btn>
                     </v-list-item-action>
                   </v-list-item>
                   <v-divider
@@ -58,7 +58,8 @@
       </v-flex>
     </v-layout>
 
-    <v-dialog v-model="dialog" persistent max-width="290">
+    <!-- 수정 팝업 -->
+    <v-dialog v-model="dialog" persistent max-width="600">
       <v-card>
         <v-card-title class="headline">Modify</v-card-title>
         <v-card-text>
@@ -67,15 +68,22 @@
                 v-model="mod.startTime"
                 label="Start Date Time"
                 type="datetime-local"
+                required
               ></v-text-field>
-              <v-text-field v-model="mod.title" label="Title"></v-text-field>
-              <v-textarea v-model="mod.content" label="Content" rows="3"></v-textarea>
+              <v-text-field
+                v-model="mod.endTime"
+                label="Start Date Time"
+                type="datetime-local"
+                required
+              ></v-text-field>
+              <v-text-field v-model="mod.summary" label="Title"></v-text-field>
+              <v-textarea v-model="mod.description" label="Content" rows="3"></v-textarea>
           </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="test">Cancel</v-btn>
-          <v-btn color="green darken-1" text @click="dialog = false">Save</v-btn>
+          <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
+          <v-btn color="green darken-1" :disabled="!mod.valid" text @click="modify">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -87,6 +95,9 @@ import { gooleapiMixin } from '../plugins/googleapiMixin'
 import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
 import router from '@/router'
+import showdown from 'showdown'
+
+const converter = new showdown.Converter()
 
 const ONE_DAY = 1000 * 60 * 60 * 24
 
@@ -145,6 +156,7 @@ export default {
         this.title = this.content = ''
         localStorage.removeItem('progress_data')
         this.$toasted.global.okay('Saved.')
+        this.refreshData()
       })
     },
     /* 이벤트 기록 가져오기 */
@@ -188,11 +200,51 @@ export default {
       let min = Math.round((endTime - startTime) / (1000 * 60))
       return `Total: ${min}Min`
     },
-    modify (item) {
+    openModifyPopup (item) {
       this.dialog = true
+      let trim = (str) => {
+        return str.toString().length === 1 ? '0' + str : str
+      }
+      let format = (date) => {
+        let year = date.getFullYear()
+        let month = trim(date.getMonth() + 1)
+        let day = trim(date.getDate())
+        let hours = trim(date.getHours())
+        let min = trim(date.getMinutes())
+        return `${year}-${month}-${day}T${hours}:${min}`
+      }
+
+      this.mod.item = item
+      // 아래 4개는 수정될 항목
+      this.mod.startTime = format(new Date(item.start.dateTime))
+      this.mod.endTime = format(new Date(item.end.dateTime))
+      this.mod.summary = item.summary
+      this.mod.description = item.description
     },
-    test (item) {
-      console.log(this.mod.startTime)
+    modify () {
+      this.updateEvent({
+        'calendarId': this.mod.item.organizer.email,
+        'eventId': this.mod.item.id,
+        'summary': this.mod.summary,
+        'description': this.mod.description,
+        'start': {
+          'dateTime': new Date(this.mod.startTime).toISOString()
+        },
+        'end': {
+          'dateTime': new Date(this.mod.endTime).toISOString()
+        }
+      }, (event) => {
+        // 수정 내용 화면의 event에 적용
+        this.mod.item.start.dateTime = new Date(this.mod.startTime).toISOString()
+        this.mod.item.end.dateTime = new Date(this.mod.endTime).toISOString()
+        this.mod.item.summary = this.mod.summary
+        this.mod.item.description = this.mod.description
+        this.dialog = false
+        this.$toasted.global.okay('Modified.')
+      })
+    },
+    mdToHtml (text) {
+      return converter.makeHtml(text)
     }
   },
   data () {
@@ -208,7 +260,7 @@ export default {
       minDate: null,
       maxDate: null,
       dialog: false,
-      mod: { valid: false, title: '', content: '', startTime: '2019-08-09T12:01', endTime: '' }
+      mod: { valid: false, item: null, summary: '', description: '', startTime: '', endTime: '' }
     }
   }
 }

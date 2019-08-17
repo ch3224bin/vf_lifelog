@@ -20,6 +20,9 @@ export const gooleapiMixin = {
       }
 
       return this.$gapi.client.calendar.events.list(query)
+    },
+    updateEvent (eventBody, cb) {
+      return this.$gapi.client.calendar.events.update(eventBody).execute(cb)
     }
   }
 }

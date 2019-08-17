@@ -1,5 +1,5 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>Life Log 사용방법</h1>
   </div>
 </template>
