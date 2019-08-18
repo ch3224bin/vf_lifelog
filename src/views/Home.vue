@@ -12,7 +12,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="success" v-if="!progressData" :disabled="!valid" @click="start"><v-icon>mdi-alarm</v-icon> Start</v-btn>
-              <v-btn color="success" v-if="progressData" :disabled="!valid" @click="finish"><v-icon>mdi-alarm-check</v-icon> Finish</v-btn>
+              <v-btn color="success" v-if="progressData" :loading="loading" :disabled="!valid || loading" @click="finish"><v-icon>mdi-alarm-check</v-icon> Finish</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -82,8 +82,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="green darken-1" :disabled="!mod.valid" text @click="modify">Save</v-btn>
+          <v-btn color="green darken-1" :loading="mod.loading" :disabled="mod.loading" text @click="dialog = false">Cancel</v-btn>
+          <v-btn color="green darken-1" :loading="mod.loading" :disabled="!mod.valid || mod.loading" text @click="modify">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -148,6 +148,7 @@ export default {
         }
       }
 
+      this.loading = true
       this.$gapi.client.calendar.events.insert({
         'calendarId': calendarId,
         'resource': event
@@ -156,6 +157,7 @@ export default {
         this.title = this.content = ''
         localStorage.removeItem('progress_data')
         this.$toasted.global.okay('Saved.')
+        this.loading = false
         this.refreshData()
       })
     },
@@ -222,6 +224,7 @@ export default {
       this.mod.description = item.description
     },
     modify () {
+      this.mod.loading = true
       this.updateEvent({
         'calendarId': this.mod.item.organizer.email,
         'eventId': this.mod.item.id,
@@ -239,6 +242,7 @@ export default {
         this.mod.item.end.dateTime = new Date(this.mod.endTime).toISOString()
         this.mod.item.summary = this.mod.summary
         this.mod.item.description = this.mod.description
+        this.mod.loading = false
         this.dialog = false
         this.$toasted.global.okay('Modified.')
       })
@@ -252,6 +256,7 @@ export default {
       category: '',
       title: '',
       content: '',
+      loading: false,
       progressData: '',
       valid: false,
       categories: '',
@@ -260,7 +265,7 @@ export default {
       minDate: null,
       maxDate: null,
       dialog: false,
-      mod: { valid: false, item: null, summary: '', description: '', startTime: '', endTime: '' }
+      mod: { valid: false, loading: false, item: null, summary: '', description: '', startTime: '', endTime: '' }
     }
   }
 }

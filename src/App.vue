@@ -4,7 +4,8 @@
       v-model="drawer"
       absolute
       temporary
-    >
+      style="position:fixed; top:0; left:0; overflow-y:auto;"
+    ><!-- drawer 스크롤이 본문을 따라가는 이슈 https://github.com/vuetifyjs/vuetify/issues/3385 -->
       <v-list
         dense
         nav
@@ -22,7 +23,7 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar app color="lime">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title class="headline text-uppercase">
         <span>LifeLog</span>
       </v-toolbar-title>
