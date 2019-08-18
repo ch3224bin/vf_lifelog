@@ -29,6 +29,10 @@
           <v-card-text>
             <v-list two-line subheader>
                 <template v-for="(item , index) in events">
+                  <v-divider
+                    v-if="index !== 0 && index + 1 < events.length && item.header"
+                    :key="index"
+                  ></v-divider>
                   <v-subheader
                     v-if="item.header"
                     :key="item.header"
@@ -46,13 +50,9 @@
                       <v-btn icon @click="openModifyPopup(item)"><v-icon>mdi-settings</v-icon></v-btn>
                     </v-list-item-action>
                   </v-list-item>
-                  <v-divider
-                    v-if="index + 1 < events.length"
-                    :key="index"
-                  ></v-divider>
                 </template>
             </v-list>
-            <v-btn outlined block color="lime" @click="readMore">Read more</v-btn>
+            <v-btn outlined block color="lime" :loading="readMoreLoading" :disabled="readMoreLoading"  @click="readMore">Read more</v-btn>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -171,30 +171,50 @@ export default {
     readMore () {
       this.maxDate = this.minDate
       this.minDate = new Date(this.minDate.getTime() - (ONE_DAY * 7))
+      this.readMoreLoading = true
       this.getData()
+        .subscribe(() => {
+          this.readMoreLoading = false
+        })
     },
     getData () {
       if (!this.$store.state.isSignIn) {
         return
       }
       // 카테로리 별 event list를 가져와서 합치고 정렬한다.
-      from(this.categories).pipe(
+      let pub = from(this.categories).pipe(
         mergeMap(c => this.getEventsList(c.id, { minDate: this.minDate, maxDate: this.maxDate })),
         map(res => res.result.items),
         reduce((a, b) => a.concat(b))
-      ).subscribe(r => {
+      )
+
+      pub.subscribe(r => {
+        // 날짜별로 subheader를 끼워 넣는다.
+        let eventList = this.$_.orderBy(r, ['start.dateTime'], 'desc')
+        let resultList = []
+        let lastDate
+        eventList.forEach((item) => {
+          let startDate = new Date(item.start.dateTime).format('yyyy-MM-dd E')
+          if (lastDate !== startDate) {
+            resultList.push({ header: startDate })
+            lastDate = startDate
+          }
+          resultList.push(item)
+        })
         if (this.events === null) {
-          this.events = this.$_.orderBy(r, ['start.dateTime'], 'desc')
+          this.events = resultList
         } else {
-          this.events = this.events.concat(this.$_.orderBy(r, ['start.dateTime'], 'desc'))
+          this.events = this.events.concat(resultList)
         }
       })
+
+      return pub
     },
     /* 시간 표시 */
     getDateTime (item) {
       let startTime = new Date(item.start.dateTime)
       let endTime = new Date(item.end.dateTime)
-      return `${startTime.toLocaleTimeString()} ~ ${endTime.toLocaleTimeString()}`
+      return `${startTime.format('a/p hh:mm')} ~ ${endTime.format('a/p hh:mm')}`
     },
     getMinTime (item) {
       let startTime = new Date(item.start.dateTime)
@@ -204,22 +224,10 @@ export default {
     },
     openModifyPopup (item) {
       this.dialog = true
-      let trim = (str) => {
-        return str.toString().length === 1 ? '0' + str : str
-      }
-      let format = (date) => {
-        let year = date.getFullYear()
-        let month = trim(date.getMonth() + 1)
-        let day = trim(date.getDate())
-        let hours = trim(date.getHours())
-        let min = trim(date.getMinutes())
-        return `${year}-${month}-${day}T${hours}:${min}`
-      }
-
       this.mod.item = item
       // 아래 4개는 수정될 항목
-      this.mod.startTime = format(new Date(item.start.dateTime))
-      this.mod.endTime = format(new Date(item.end.dateTime))
+      this.mod.startTime = new Date(item.start.dateTime).format('yyyy-MM-ddTHH:mm')
+      this.mod.endTime = new Date(item.end.dateTime).format('yyyy-MM-ddTHH:mm')
       this.mod.summary = item.summary
       this.mod.description = item.description
     },
@@ -257,6 +265,7 @@ export default {
       title: '',
       content: '',
       loading: false,
+      readMoreLoading: false,
       progressData: '',
       valid: false,
       categories: '',
