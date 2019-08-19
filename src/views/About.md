@@ -39,5 +39,5 @@ History에서 마크다운을 html로 변환하여 보여줍니다.
 
 # github
 이 앱의 소스는 아래 github에 올려두었습니다.
-[https://github.com/ch3224bin/vf_lifelog] (https://github.com/ch3224bin/vf_lifelog)
+https://github.com/ch3224bin/vf_lifelog
 
