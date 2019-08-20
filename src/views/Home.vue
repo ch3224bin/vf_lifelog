@@ -96,6 +96,7 @@ import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
 import router from '@/router'
 import showdown from 'showdown'
+import _ from 'lodash'
 
 const converter = new showdown.Converter()
 
@@ -109,6 +110,16 @@ export default {
   mounted () {
     this.refreshData()
     this.initForm()
+  },
+  watch: {
+    title () {
+      if (!this.progressData) return
+      this.saveContent()
+    },
+    content (newVal) {
+      if (!this.progressData) return
+      this.saveContent()
+    }
   },
   methods: {
     initForm () {
@@ -257,7 +268,12 @@ export default {
     },
     mdToHtml (text) {
       return converter.makeHtml(text)
-    }
+    },
+    saveContent: _.debounce(function () {
+      this.progressData.title = this.title
+      this.progressData.content = this.content
+      localStorage.setItem('progress_data', JSON.stringify(this.progressData))
+    }, 300)
   },
   data () {
     return {
