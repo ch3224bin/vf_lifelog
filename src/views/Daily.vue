@@ -10,16 +10,24 @@
             <v-layout row wrap>
               <v-flex xs12 sm12 md12 lg12 xl12>
                 <v-row no-gutters>
-                  <v-col cols="8">
+                  <v-col cols="6">
                     <datepicker v-model="date" name="date" format="yyyy년 MM월 dd일" class="title"></datepicker>
                   </v-col>
-                  <v-col cols="4">
+                  <v-col cols="6">
                     <v-btn color="primary" @click="loadData">Search</v-btn>
-                    <v-btn color="green" icon>
+                    <v-btn color="green" icon @click="toggleChart = !toggleChart">
                       <v-icon>mdi-chart-bar</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
+              </v-flex>
+              <v-flex v-if="toggleChart" xs12 sm12 md12 lg12 xl12>
+                <g-chart
+                  type="PieChart"
+                  :data="chartData"
+                  :options="chartOptions"
+                  style="min-height: 330px;"
+                  />
               </v-flex>
               <v-flex
                 v-for="item in items"
@@ -74,13 +82,11 @@ import Datepicker from 'vuejs-datepicker'
 import { gooleapiMixin } from '../plugins/googleapiMixin'
 import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
-import showdown from 'showdown'
-
-const converter = new showdown.Converter()
+import { GChart } from 'vue-google-charts'
 
 export default {
   components: {
-    Datepicker
+    Datepicker, GChart
   },
   mixins: [gooleapiMixin],
   created () {
@@ -91,7 +97,13 @@ export default {
       date: new Date(),
       events: null,
       categories: null,
-      items: []
+      items: [],
+      toggleChart: false,
+      chartData: null,
+      chartOptions: {
+        pieSliceText: 'value',
+        legend: { position: 'top' }
+      }
     }
   },
   methods: {
@@ -109,13 +121,19 @@ export default {
     getMinString (mills) {
       return `${Math.round(mills / (1000 * 60))} Min`
     },
+    getMinToHourMinFormat (min) {
+      return `${Math.floor(min / 60)}시간 ${min % 60}분`
+    },
     getTotal (item) {
+      let min = this.getTotalMin(item)
+      return this.getMinToHourMinFormat(min)
+    },
+    getTotalMin (item) {
       let mills = 0
       item.subItems.forEach(e => {
         mills += e.val
       })
-      let min = Math.round(mills / (1000 * 60))
-      return `${Math.floor(min / 60)}Hour ${min % 60}Minute`
+      return Math.round(mills / (1000 * 60))
     },
     loadData () {
       let minDate = new Date(this.date.toDateString())
@@ -142,11 +160,21 @@ export default {
           subGroup.val += new Date(e.end.dateTime) - new Date(e.start.dateTime)
           subGroup.description += '\n' + e.description
         })
+        // card list로 나오는 데이터
         this.items = result
+        // 차트 데이터
+        let chartData = this.$_.map(result,
+          (item) => {
+            let min = this.getTotalMin(item)
+            return [item.name, { v: min, f: this.getMinToHourMinFormat(min) }]
+          })
+        this.chartData = [
+          ['Task', 'Hours per Day']
+        ].concat(chartData)
       })
     },
     mdToHtml (text) {
-      return converter.makeHtml(text)
+      return this.$sdConverter.makeHtml(text)
     }
   }
 }

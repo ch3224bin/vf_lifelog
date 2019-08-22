@@ -95,10 +95,7 @@ import { gooleapiMixin } from '../plugins/googleapiMixin'
 import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
 import router from '@/router'
-import showdown from 'showdown'
 import _ from 'lodash'
-
-const converter = new showdown.Converter()
 
 const ONE_DAY = 1000 * 60 * 60 * 24
 
@@ -267,7 +264,7 @@ export default {
       })
     },
     mdToHtml (text) {
-      return converter.makeHtml(text)
+      return this.$sdConverter.makeHtml(text)
     },
     saveContent: _.debounce(function () {
       this.progressData.title = this.title
