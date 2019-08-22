@@ -8,36 +8,57 @@
           </v-card-title>
           <v-card-text>
             <v-layout row wrap>
-              <v-flex xs6 sm4 md 4 lg 3>
-                <datepicker v-model="date" name="date" format="yyyy년 MM월 dd일" class="title"></datepicker>
+              <v-flex xs12 sm12 md12 lg12 xl12>
+                <v-row no-gutters>
+                  <v-col cols="8">
+                    <datepicker v-model="date" name="date" format="yyyy년 MM월 dd일" class="title"></datepicker>
+                  </v-col>
+                  <v-col cols="4">
+                    <v-btn color="primary" @click="loadData">Search</v-btn>
+                    <v-btn color="green" icon>
+                      <v-icon>mdi-chart-bar</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </v-flex>
-              <v-flex xs6 sm4 md4 lg3>
-                <v-btn color="primary" @click="loadData">Search</v-btn>
-              </v-flex>
-            </v-layout>
-            <v-layout wrap>
               <v-flex
                 v-for="item in items"
                 :key="item.name"
                 xs12
-                sm6
-                md4
-                lg4
-              >
+                sm12
+                md12
+                lg6
+                xl6>
                 <v-card>
                   <v-card-title><h4>{{ item.name }}</h4></v-card-title>
+                  <v-expansion-panels>
+                    <v-expansion-panel v-for="subItem in item.subItems" :key="subItem.name">
+                      <v-expansion-panel-header>
+                        <v-row no-gutters>
+                          <v-col cols="8">
+                            {{ subItem.name }}
+                          </v-col>
+                          <v-col cols="4">
+                            {{ getMinString(subItem.val) }}
+                          </v-col>
+                        </v-row>
+                      </v-expansion-panel-header>
+                      <v-expansion-panel-content>
+                        <div v-html="mdToHtml(subItem.description)"></div>
+                      </v-expansion-panel-content>
+                    </v-expansion-panel>
+                  </v-expansion-panels>
                   <v-divider></v-divider>
-                  <v-list dense>
-                    <v-list-item  v-for="subItem in item.subItems" :key="subItem.name">
-                      <v-list-item-content class="subtitle-1">{{ subItem.name }}</v-list-item-content>
-                      <v-list-item-content class="align-end">{{ getMinString(subItem.val) }}</v-list-item-content>
-                    </v-list-item>
-                    <v-divider></v-divider>
-                    <v-list-item >
-                      <v-list-item-content class="subtitle-1">Total: </v-list-item-content>
-                      <v-list-item-content class="align-end">{{ getTotal(item) }}</v-list-item-content>
-                    </v-list-item>
-                  </v-list>
+                  <v-card-text>
+                    <v-row no-gutters>
+                      <v-col cols="8">
+                        Total:
+                      </v-col>
+                      <v-col cols="4">
+                        {{ getTotal(item) }}
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
                 </v-card>
               </v-flex>
             </v-layout>
@@ -53,6 +74,9 @@ import Datepicker from 'vuejs-datepicker'
 import { gooleapiMixin } from '../plugins/googleapiMixin'
 import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
+import showdown from 'showdown'
+
+const converter = new showdown.Converter()
 
 export default {
   components: {
@@ -83,7 +107,7 @@ export default {
       return ''
     },
     getMinString (mills) {
-      return `${Math.round(mills / (1000 * 60))} Minute`
+      return `${Math.round(mills / (1000 * 60))} Min`
     },
     getTotal (item) {
       let mills = 0
@@ -112,13 +136,17 @@ export default {
           }
           let subGroup = this.find(group.subItems, 'name', e.summary)
           if (!subGroup) {
-            subGroup = { name: e.summary, val: 0 }
+            subGroup = { name: e.summary, val: 0, description: '' }
             group.subItems.push(subGroup)
           }
           subGroup.val += new Date(e.end.dateTime) - new Date(e.start.dateTime)
+          subGroup.description += '\n' + e.description
         })
         this.items = result
       })
+    },
+    mdToHtml (text) {
+      return converter.makeHtml(text)
     }
   }
 }
