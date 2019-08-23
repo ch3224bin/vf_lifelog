@@ -6,8 +6,8 @@
           <v-card>
             <v-card-text>
               <v-select :rules="[v => !!v || 'Calendar is required']" :items="categories" item-text="summary" item-value="id" v-model="category" label="Calendar" required></v-select>
-              <v-text-field v-model="title" label="Title"></v-text-field>
-              <v-textarea v-model="content" label="Content" rows="3"></v-textarea>
+              <v-text-field :value="title" @change="v => title = v" label="Title"></v-text-field>
+              <v-textarea :value="content" @change="v => content = v" label="Content" rows="3"></v-textarea>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -76,8 +76,8 @@
                 type="datetime-local"
                 required
               ></v-text-field>
-              <v-text-field v-model="mod.summary" label="Title"></v-text-field>
-              <v-textarea v-model="mod.description" label="Content" rows="3"></v-textarea>
+              <v-text-field :value="mod.summary" @change="v => mod.summary = v" label="Title"></v-text-field>
+              <v-textarea :value="mod.description" @change="v => mod.description = v" label="Content" rows="3"></v-textarea>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -113,7 +113,7 @@ export default {
       if (!this.progressData) return
       this.saveContent()
     },
-    content (newVal) {
+    content () {
       if (!this.progressData) return
       this.saveContent()
     }
