@@ -197,12 +197,18 @@ export default {
       )
 
       pub.subscribe(r => {
+        // 각 event에 start, end를 Date형으로 하나씩 넣어줬다.
+        r.forEach(item => {
+          item.startDate = new Date(item.start.dateTime)
+          item.endDate = new Date(item.end.dateTime)
+        })
+
         // 날짜별로 subheader를 끼워 넣는다.
-        let eventList = this.$_.orderBy(r, ['start.dateTime'], 'desc')
+        let eventList = this.$_.orderBy(r, ['startDate'], 'desc')
         let resultList = []
         let lastDate
         eventList.forEach((item) => {
-          let startDate = new Date(item.start.dateTime).format('yyyy-MM-dd E')
+          let startDate = item.startDate.format('yyyy-MM-dd E')
           if (lastDate !== startDate) {
             resultList.push({ header: startDate })
             lastDate = startDate
@@ -220,22 +226,18 @@ export default {
     },
     /* 시간 표시 */
     getDateTime (item) {
-      let startTime = new Date(item.start.dateTime)
-      let endTime = new Date(item.end.dateTime)
-      return `${startTime.format('a/p hh:mm')} ~ ${endTime.format('a/p hh:mm')}`
+      return `${item.startDate.format('a/p hh:mm')} ~ ${item.endDate.format('a/p hh:mm')}`
     },
     getMinTime (item) {
-      let startTime = new Date(item.start.dateTime)
-      let endTime = new Date(item.end.dateTime)
-      let min = Math.round((endTime - startTime) / (1000 * 60))
+      let min = Math.round((item.endDate - item.startDate) / (1000 * 60))
       return `Total: ${min}Min`
     },
     openModifyPopup (item) {
       this.dialog = true
       this.mod.item = item
       // 아래 4개는 수정될 항목
-      this.mod.startTime = new Date(item.start.dateTime).format('yyyy-MM-ddTHH:mm')
-      this.mod.endTime = new Date(item.end.dateTime).format('yyyy-MM-ddTHH:mm')
+      this.mod.startTime = item.startDate.format('yyyy-MM-ddTHH:mm')
+      this.mod.endTime = item.endDate.format('yyyy-MM-ddTHH:mm')
       this.mod.summary = item.summary
       this.mod.description = item.description
     },

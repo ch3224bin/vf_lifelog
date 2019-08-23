@@ -29,6 +29,7 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
+        <langs-selector />
         <v-menu offset-y v-if="$store.state.user">
           <template v-slot:activator="{ on }">
             <v-btn
@@ -80,8 +81,13 @@
 </template>
 
 <script>
+import LangsSelector from '@/components/LangsSelector'
+
 export default {
   name: 'App',
+  components: {
+    LangsSelector
+  },
   data: () => ({
     dialog: false,
     drawer: false,
@@ -105,3 +111,7 @@ export default {
   }
 }
 </script>
+
+<style>
+*{ text-transform: none !important; }
+</style>

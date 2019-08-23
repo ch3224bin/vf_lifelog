@@ -14,8 +14,8 @@
                     <datepicker v-model="date" name="date" format="yyyy년 MM월 dd일" class="title"></datepicker>
                   </v-col>
                   <v-col cols="6">
-                    <v-btn color="primary" @click="loadData">Search</v-btn>
-                    <v-btn color="green" icon @click="toggleChart = !toggleChart">
+                    <v-btn class="mx-2" color="primary" fab small dark @click="loadData"><v-icon>mdi-magnify</v-icon></v-btn>
+                    <v-btn class="mx-2" color="green" fab small dark @click="toggleChart = !toggleChart">
                       <v-icon>mdi-chart-bar</v-icon>
                     </v-btn>
                   </v-col>
