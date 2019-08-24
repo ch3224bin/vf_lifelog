@@ -72,7 +72,7 @@
               ></v-text-field>
               <v-text-field
                 v-model="mod.endTime"
-                label="Start Date Time"
+                label="End Date Time"
                 type="datetime-local"
                 required
               ></v-text-field>
