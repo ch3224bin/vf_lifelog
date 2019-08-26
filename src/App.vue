@@ -75,7 +75,8 @@
       </v-toolbar-items>
     </v-app-bar>
     <v-content>
-      <router-view/>
+      <router-view />
+      <vue-progress-bar />
     </v-content>
   </v-app>
 </template>
