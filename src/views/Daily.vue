@@ -4,7 +4,7 @@
       <v-flex xs12 sm10 md8 lg8 xl6>
         <v-card>
           <v-card-title primary-title>
-            Daily statistics
+            {{ $t('label.title.dailyStatistics') }}
           </v-card-title>
           <v-card-text>
             <v-layout row wrap>
@@ -13,10 +13,13 @@
                   <v-col cols="6">
                     <datepicker v-model="date" name="date" format="yyyy년 MM월 dd일" class="title"></datepicker>
                   </v-col>
-                  <v-col cols="6">
+                  <v-col cols="6" class="text-right">
                     <v-btn class="mx-2" color="primary" fab small dark @click="loadData"><v-icon>mdi-magnify</v-icon></v-btn>
                     <v-btn class="mx-2" color="green" fab small dark @click="toggleChart = !toggleChart">
                       <v-icon>mdi-chart-bar</v-icon>
+                    </v-btn>
+                    <v-btn class="mx-2" color="green" fab small dark @click="openClipboardDialog">
+                      <v-icon>mdi-clipboard-text</v-icon>
                     </v-btn>
                   </v-col>
                 </v-row>
@@ -39,6 +42,9 @@
                 xl6>
                 <v-card>
                   <v-card-title><h4>{{ item.name }}</h4></v-card-title>
+                  <v-card-text class="text-right">
+                    {{ $t('label.total') }}: {{ getTotal(item) }}
+                  </v-card-text>
                   <v-expansion-panels>
                     <v-expansion-panel v-for="subItem in item.subItems" :key="subItem.name">
                       <v-expansion-panel-header>
@@ -56,17 +62,6 @@
                       </v-expansion-panel-content>
                     </v-expansion-panel>
                   </v-expansion-panels>
-                  <v-divider></v-divider>
-                  <v-card-text>
-                    <v-row no-gutters>
-                      <v-col cols="8">
-                        Total:
-                      </v-col>
-                      <v-col cols="4">
-                        {{ getTotal(item) }}
-                      </v-col>
-                    </v-row>
-                  </v-card-text>
                 </v-card>
               </v-flex>
             </v-layout>
@@ -74,6 +69,19 @@
         </v-card>
       </v-flex>
     </v-layout>
+    <v-dialog v-model="clipboardDialog" max-width="600">
+      <v-card>
+        <v-card-text>
+          <v-text-area solo v-model="clipboardText">
+          </v-text-area>
+        </v-card-text>
+        <v-card-actions>
+          <div class="flex-grow-1"></div>
+          <v-btn>Copy</v-btn>
+          <v-btn @click="clipboardDialog = false">Close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -83,6 +91,8 @@ import { gooleapiMixin } from '../plugins/googleapiMixin'
 import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
 import { GChart } from 'vue-google-charts'
+
+const ONE_DAY_MILLS = 1000 * 60 * 60 * 24
 
 export default {
   components: {
@@ -103,7 +113,9 @@ export default {
       chartOptions: {
         pieSliceText: 'value',
         legend: { position: 'top' }
-      }
+      },
+      clipboardText: '',
+      clipboardDialog: false
     }
   },
   methods: {
@@ -119,10 +131,10 @@ export default {
       return ''
     },
     getMinString (mills) {
-      return `${Math.round(mills / (1000 * 60))} Min`
+      return `${Math.round(mills / (1000 * 60))} ${ this.$t('label.min') }`
     },
     getMinToHourMinFormat (min) {
-      return `${Math.floor(min / 60)}시간 ${min % 60}분`
+      return `${Math.floor(min / 60)}${this.$t('label.hours')} ${min % 60}${this.$t('label.min')}`
     },
     getTotal (item) {
       let min = this.getTotalMin(item)
@@ -137,7 +149,7 @@ export default {
     },
     loadData () {
       let minDate = new Date(this.date.toDateString())
-      let maxDate = new Date(minDate.getTime() + (1000 * 60 * 60 * 24))
+      let maxDate = new Date(minDate.getTime() + ONE_DAY_MILLS)
 
       from(this.categories).pipe(
         mergeMap(c => this.getEventsList(c.id, { minDate: minDate, maxDate: maxDate })),
@@ -175,6 +187,20 @@ export default {
     },
     mdToHtml (text) {
       return this.$sdConverter.makeHtml(text)
+    },
+    openClipboardDialog () {
+      // text로 변환
+      let text = ''
+      if (this.items) {
+        this.items.forEach(o => {
+          text += `${o.name}:\n`
+          o.subItems.forEach(s => {
+            text += `    ${s.name} - ${this.getMinString(s.val)}\n`
+          })
+        })
+      }
+      this.clipboardText = text
+      this.clipboardDialog = true
     }
   }
 }

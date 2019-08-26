@@ -36,8 +36,7 @@
                   <v-subheader
                     v-if="item.header"
                     :key="item.header"
-                    v-text="item.header"
-                  ></v-subheader>
+                    >{{ $d(item.date, 'shortWD') }}</v-subheader>
                   <v-list-item v-else :key="item.id">
                     <v-list-item-content>
                       <v-list-item-subtitle v-text="getDateTime(item)"></v-list-item-subtitle>
@@ -210,7 +209,7 @@ export default {
         eventList.forEach((item) => {
           let startDate = item.startDate.format('yyyy-MM-dd E')
           if (lastDate !== startDate) {
-            resultList.push({ header: startDate })
+            resultList.push({ header: startDate, date: item.startDate })
             lastDate = startDate
           }
           resultList.push(item)

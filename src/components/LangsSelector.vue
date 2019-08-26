@@ -27,11 +27,13 @@ export default {
       this.langLabel = this.langs[0].label
       return
     }
+    this.$i18n.locale = findLang.value
     this.langLabel = findLang.label
   },
   methods: {
     select (item) {
       localStorage.setItem('lang', item.value)
+      this.$i18n.locale = item.value
       this.langLabel = item.label
     }
   },

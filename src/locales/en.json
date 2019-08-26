@@ -1,0 +1,17 @@
+{
+  "label": {
+    "hours": "hours",
+    "min": "min",
+    "total": "Total",
+    "title": {
+      "dailyStatistics": "Daily statistics"
+    }
+  },
+  "btn": {
+    "start": "Start",
+    "finish": "Finish",
+    "modify": "Modify",
+    "cancel": "Cancel"
+  },
+  "message": "hello i18n !!"
+}

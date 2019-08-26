@@ -1,0 +1,17 @@
+{
+  "label": {
+    "hours": "시간",
+    "min": "분",
+    "total": "총",
+    "title": {
+      "dailyStatistics": "일일통계"
+    }
+  },
+  "btn": {
+    "start": "시작",
+    "finish": "종료",
+    "modify": "수정",
+    "cancel": "취소"
+  },
+  "message": "hello i18n !!"
+}
