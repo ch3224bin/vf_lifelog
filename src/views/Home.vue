@@ -71,7 +71,7 @@
               ></v-text-field>
               <v-text-field
                 v-model="mod.endTime"
-                label="Start Date Time"
+                label="End Date Time"
                 type="datetime-local"
                 required
               ></v-text-field>
@@ -255,8 +255,8 @@ export default {
         }
       }, (event) => {
         // 수정 내용 화면의 event에 적용
-        this.mod.item.start.dateTime = new Date(this.mod.startTime).toISOString()
-        this.mod.item.end.dateTime = new Date(this.mod.endTime).toISOString()
+        this.mod.item.startDate = new Date(this.mod.startTime)
+        this.mod.item.endDate = new Date(this.mod.endTime)
         this.mod.item.summary = this.mod.summary
         this.mod.item.description = this.mod.description
         this.mod.loading = false
