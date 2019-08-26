@@ -205,7 +205,7 @@ export default {
             totalMills += s.val
           })
         })
-        text += `\n총 ${this.getMinToHourMinFormat(this.getMin(totalMills))}`
+        text += `\n${this.$t('label.total')} ${this.getMinToHourMinFormat(this.getMin(totalMills))}`
       }
       this.clipboardText = text
       this.clipboardDialog = true
