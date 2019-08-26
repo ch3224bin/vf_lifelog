@@ -71,14 +71,16 @@
     </v-layout>
     <v-dialog v-model="clipboardDialog" max-width="600">
       <v-card>
+        <v-card-title>
+          통계 요약
+        </v-card-title>
         <v-card-text>
-          <v-text-area solo v-model="clipboardText">
-          </v-text-area>
+          <v-textarea solo v-model="clipboardText" ref="copyContainer"></v-textarea>
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1"></div>
-          <v-btn>Copy</v-btn>
-          <v-btn @click="clipboardDialog = false">Close</v-btn>
+          <v-btn color="primary" @click="doCopy">Copy</v-btn>
+          <v-btn color="secondary" @click="clipboardDialog = false">Close</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -130,8 +132,11 @@ export default {
       }
       return ''
     },
+    getMin (mills) {
+      return Math.round(mills / (1000 * 60))
+    },
     getMinString (mills) {
-      return `${Math.round(mills / (1000 * 60))} ${ this.$t('label.min') }`
+      return `${this.getMin(mills)} ${this.$t('label.min')}`
     },
     getMinToHourMinFormat (min) {
       return `${Math.floor(min / 60)}${this.$t('label.hours')} ${min % 60}${this.$t('label.min')}`
@@ -191,16 +196,27 @@ export default {
     openClipboardDialog () {
       // text로 변환
       let text = ''
+      let totalMills = 0
       if (this.items) {
-        this.items.forEach(o => {
+        this.items.forEach((o, i) => {
           text += `${o.name}:\n`
           o.subItems.forEach(s => {
             text += `    ${s.name} - ${this.getMinString(s.val)}\n`
+            totalMills += s.val
           })
         })
+        text += `\n총 ${this.getMinToHourMinFormat(this.getMin(totalMills))}`
       }
       this.clipboardText = text
       this.clipboardDialog = true
+    },
+    doCopy () {
+      let toasted = this.$toasted
+      this.$copyText(this.clipboardText, this.$refs.copyContainer.$el).then(function (e) {
+        toasted.global.okay('클립보드에 복사되었습니다.')
+      }, function (e) {
+        toasted.global.error('Failed to copy texts')
+      })
     }
   }
 }

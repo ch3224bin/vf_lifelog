@@ -22,3 +22,12 @@ Vue.toasted.register('info', (payload) => {
   duration: 3000,
   className: 'info'
 })
+
+Vue.toasted.register('error', (payload) => {
+  return payload
+}, {
+  icon: 'mdi-alert-circle-outline',
+  position: 'bottom-center',
+  duration: 3000,
+  className: 'error'
+})
