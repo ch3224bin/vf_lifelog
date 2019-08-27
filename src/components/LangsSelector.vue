@@ -19,16 +19,21 @@
 </template>
 
 <script>
+import {ko, en} from 'vuejs-datepicker/dist/locale'
+import store from '@/store'
+
 export default {
   mounted () {
     let lang = localStorage.getItem('lang')
     let findLang = this.$_.find(this.langs, o => o.value === lang)
     if (!findLang) {
       this.langLabel = this.langs[0].label
+      store.commit('setDatePickerLocale', ko)
       return
     }
     this.$i18n.locale = findLang.value
     this.langLabel = findLang.label
+    store.commit('setDatePickerLocale', findLang.dl)
   },
   methods: {
     select (item) {
@@ -40,8 +45,8 @@ export default {
   data () {
     return {
       langs: [
-        { label: '한국어', value: 'ko' },
-        { label: 'English', value: 'en' }
+        { label: '한국어', value: 'ko', dl: ko },
+        { label: 'English', value: 'en', dl: en }
       ],
       langLabel: ''
     }

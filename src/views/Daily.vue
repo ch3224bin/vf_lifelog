@@ -11,7 +11,7 @@
               <v-flex xs12 sm12 md12 lg12 xl12>
                 <v-row no-gutters>
                   <v-col cols="6">
-                    <datepicker v-model="date" name="date" format="yyyy년 MM월 dd일" class="title"></datepicker>
+                    <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" :language="$store.datePickerLocale"></datepicker>
                   </v-col>
                   <v-col cols="6" class="text-right">
                     <v-btn class="mx-2" color="primary" fab small dark @click="loadData"><v-icon>mdi-magnify</v-icon></v-btn>
