@@ -3,8 +3,11 @@
     "hours": "hours",
     "min": "min",
     "total": "Total",
+    "copy": "Copy",
+    "close": "Close",
     "title": {
-      "dailyStatistics": "Daily statistics"
+      "dailyStatistics": "Daily statistics",
+      "statisticsSummary": "Statistic Summary"
     }
   },
   "btn": {

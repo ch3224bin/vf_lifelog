@@ -72,15 +72,15 @@
     <v-dialog v-model="clipboardDialog" max-width="600">
       <v-card>
         <v-card-title>
-          통계 요약
+          {{ $t('label.title.statisticsSummary') }}
         </v-card-title>
         <v-card-text>
           <v-textarea solo v-model="clipboardText" ref="copyContainer"></v-textarea>
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1"></div>
-          <v-btn color="primary" @click="doCopy">Copy</v-btn>
-          <v-btn color="secondary" @click="clipboardDialog = false">Close</v-btn>
+          <v-btn color="primary" @click="doCopy">{{ $t('label.copy') }}</v-btn>
+          <v-btn color="secondary" @click="clipboardDialog = false">{{ $t('label.close') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

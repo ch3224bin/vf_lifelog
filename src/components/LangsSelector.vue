@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import {ko, en} from 'vuejs-datepicker/dist/locale'
+import { ko, en } from 'vuejs-datepicker/dist/locale'
 import store from '@/store'
 
 export default {

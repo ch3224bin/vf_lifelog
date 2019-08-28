@@ -3,8 +3,11 @@
     "hours": "시간",
     "min": "분",
     "total": "총",
+    "copy": "복사하기",
+    "close": "닫기",
     "title": {
-      "dailyStatistics": "일일통계"
+      "dailyStatistics": "일일통계",
+      "statisticsSummary": "통계 요약"
     }
   },
   "btn": {
