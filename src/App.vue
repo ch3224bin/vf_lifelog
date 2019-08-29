@@ -6,21 +6,73 @@
       temporary
       style="position:fixed; top:0; left:0; overflow-y:auto;"
     ><!-- drawer 스크롤이 본문을 따라가는 이슈 https://github.com/vuetifyjs/vuetify/issues/3385 -->
-      <v-list
-        dense
-        nav
-      >
-        <v-list-item
-          v-for="item in menus"
-          :key="item.title"
-          link
-          :to="item.to"
-        >
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" class="subtitle-1"></v-list-item-title>
+      <v-system-bar></v-system-bar>
+      <template v-if="$store.state.user">
+        <v-list-item>
+          <v-list-item-avatar>
+            <v-img :src="$store.state.user.imageUrl"></v-img>
+          </v-list-item-avatar>
+        </v-list-item>
+        <v-list-item>
+          <v-list-item-content >
+            <v-list-item-title class="title">
+              {{$store.state.user.name}}
+            </v-list-item-title>
+            <v-list-item-subtitle>
+              {{$store.state.user.email}}
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
+      </template>
+      <v-list-item v-else>
+        <v-list-item-content class="text-center">
+          <v-btn rounded outlined color="primary" @click="login">
+            Sign In
+          </v-btn>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
+      <v-list dense nav>
+        <template
+          v-for="item in menus"
+        >
+          <v-list-item
+            link
+            :to="item.to"
+            :key="item.title"
+            v-if="!item.subMenus"
+          >
+            <v-list-item-icon>
+              <v-icon v-text="item.icon"></v-icon>
+            </v-list-item-icon>
+            <v-list-item-title v-text="item.title"></v-list-item-title>
+          </v-list-item>
+          <v-list-group
+            v-model="item.active"
+            :prepend-icon="item.icon"
+            :key="item.title"
+            no-action
+            v-else>
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title v-text="item.title"></v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item
+              v-for="subItem in item.subMenus"
+              :key="subItem.title"
+              :to="subItem.to"
+              link>
+              <v-list-item-content>
+                <v-list-item-title v-text="subItem.title"></v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
+        </template>
       </v-list>
+      <v-footer v-if="$store.state.user">
+        <v-btn block outlined small @click="logout">Sign Out</v-btn>
+      </v-footer>
     </v-navigation-drawer>
     <v-app-bar app color="lime">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
@@ -30,48 +82,6 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <langs-selector />
-        <v-menu offset-y v-if="$store.state.user">
-          <template v-slot:activator="{ on }">
-            <v-btn
-              icon
-              v-on="on"
-            >
-              <v-avatar
-                size="32"
-                color="grey lighten-4"
-              >
-                <img :src="$store.state.user.imageUrl" alt="avatar">
-              </v-avatar>
-            </v-btn>
-          </template>
-          <v-card width="320">
-            <v-container grid-list-md>
-              <v-layout row wrap>
-                <v-flex xs4>
-                  <v-avatar
-                    size="96"
-                    color="grey lighten-4"
-                  >
-                    <img :src="$store.state.user.imageUrl" alt="avatar">
-                  </v-avatar>
-                </v-flex>
-                <v-flex xs8>
-                  <v-card-text>
-                    <span class="font-weight-bold"> {{$store.state.user.name}}</span>
-                    <br>
-                    <span class="font-weight-thin">{{$store.state.user.email}}</span>
-                  </v-card-text>
-                </v-flex>
-              </v-layout>
-            </v-container>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" @click="logout">Sign Out</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
-        <v-btn v-else color="lime darken-4" @click="login" small text outlined>Sign In</v-btn>
       </v-toolbar-items>
     </v-app-bar>
     <v-content>
@@ -94,10 +104,10 @@ export default {
     drawer: false,
     langs: [{ id: 'ko', text: 'Koean' }, { id: 'en', text: 'English' }],
     menus: [
-      { title: 'Home', to: '/' },
-      { title: 'Daily', to: '/daily' },
-      { title: 'Category Settings', to: '/category' },
-      { title: 'About', to: '/about' }
+      { title: 'Home', to: '/', icon: 'mdi-home' },
+      { title: '통계', icon: 'mdi-chart-pie', subMenus: [{ title: '일일', to: '/daily' }], active: true },
+      { title: 'Settings', icon: 'mdi-tools', subMenus: [{ title: '카테고리', to: '/category' }] },
+      { title: 'About', to: '/about', icon: 'mdi-help-box' }
     ]
   }),
   methods: {
