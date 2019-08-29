@@ -70,7 +70,7 @@
           </v-list-group>
         </template>
       </v-list>
-      <v-footer v-if="$store.state.user">
+      <v-footer v-if="$store.state.user" absolute>
         <v-btn block outlined small @click="logout">Sign Out</v-btn>
       </v-footer>
     </v-navigation-drawer>
@@ -106,7 +106,7 @@ export default {
     menus: [
       { title: 'Home', to: '/', icon: 'mdi-home' },
       { title: '통계', icon: 'mdi-chart-pie', subMenus: [{ title: '일일', to: '/daily' }], active: true },
-      { title: 'Settings', icon: 'mdi-tools', subMenus: [{ title: '카테고리', to: '/category' }] },
+      { title: '설정', icon: 'mdi-tools', subMenus: [{ title: '카테고리', to: '/category' }] },
       { title: 'About', to: '/about', icon: 'mdi-help-box' }
     ]
   }),
