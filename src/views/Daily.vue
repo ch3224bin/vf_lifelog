@@ -32,39 +32,8 @@
                   style="min-height: 330px;"
                   />
               </v-flex>
-              <v-flex
-                v-for="item in items"
-                :key="item.name"
-                xs12
-                sm12
-                md12
-                lg6
-                xl6>
-                <v-card>
-                  <v-card-title><h4>{{ item.name }}</h4></v-card-title>
-                  <v-card-text class="text-right">
-                    {{ $t('label.total') }}: {{ getTotal(item) }}
-                  </v-card-text>
-                  <v-expansion-panels>
-                    <v-expansion-panel v-for="subItem in item.subItems" :key="subItem.name">
-                      <v-expansion-panel-header>
-                        <v-row no-gutters>
-                          <v-col cols="8">
-                            {{ subItem.name }}
-                          </v-col>
-                          <v-col cols="4">
-                            {{ getMinString(subItem.val) }}
-                          </v-col>
-                        </v-row>
-                      </v-expansion-panel-header>
-                      <v-expansion-panel-content>
-                        <div v-html="mdToHtml(subItem.description)"></div>
-                      </v-expansion-panel-content>
-                    </v-expansion-panel>
-                  </v-expansion-panels>
-                </v-card>
-              </v-flex>
             </v-layout>
+            <statement-of-life :items="items" />
           </v-card-text>
         </v-card>
       </v-flex>
@@ -93,14 +62,16 @@ import { gooleapiMixin } from '../plugins/googleapiMixin'
 import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
 import { GChart } from 'vue-google-charts'
+import StatementOfLife from '@/components/StatementOfLife'
+import { dateFormatMixin } from '../mixins/dateformat'
 
 const ONE_DAY_MILLS = 1000 * 60 * 60 * 24
 
 export default {
   components: {
-    Datepicker, GChart
+    Datepicker, GChart, StatementOfLife
   },
-  mixins: [gooleapiMixin],
+  mixins: [gooleapiMixin, dateFormatMixin],
   created () {
     this.initCategories()
   },
@@ -131,26 +102,6 @@ export default {
         }
       }
       return ''
-    },
-    getMin (mills) {
-      return Math.round(mills / (1000 * 60))
-    },
-    getMinString (mills) {
-      return `${this.getMin(mills)} ${this.$t('label.min')}`
-    },
-    getMinToHourMinFormat (min) {
-      return `${Math.floor(min / 60)}${this.$t('label.hours')} ${min % 60}${this.$t('label.min')}`
-    },
-    getTotal (item) {
-      let min = this.getTotalMin(item)
-      return this.getMinToHourMinFormat(min)
-    },
-    getTotalMin (item) {
-      let mills = 0
-      item.subItems.forEach(e => {
-        mills += e.val
-      })
-      return Math.round(mills / (1000 * 60))
     },
     loadData () {
       let minDate = new Date(this.date.toDateString())
@@ -189,9 +140,6 @@ export default {
           ['Task', 'Hours per Day']
         ].concat(chartData)
       })
-    },
-    mdToHtml (text) {
-      return this.$sdConverter.makeHtml(text)
     },
     openClipboardDialog () {
       // text로 변환
