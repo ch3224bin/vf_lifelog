@@ -4,7 +4,7 @@
       <v-flex xs12 sm10 md8 lg8 xl6>
         <v-card>
           <v-card-title primary-title>
-            {{ $t('msg.selectCategory') }} 
+            {{ $t('msg.selectCategory') }}
           </v-card-title>
           <v-card-text>
             <v-list subheader>
