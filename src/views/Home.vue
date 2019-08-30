@@ -5,14 +5,14 @@
         <v-form ref="form" v-model="valid">
           <v-card>
             <v-card-text>
-              <v-select :rules="[v => !!v || 'Calendar is required']" :items="categories" item-text="summary" item-value="id" v-model="category" label="Calendar" required></v-select>
-              <v-text-field :value="title" @change="v => title = v" label="Title"></v-text-field>
-              <v-textarea :value="content" @change="v => content = v" label="Content" rows="3"></v-textarea>
+              <v-select :rules="[v => !!v || 'Calendar is required']" :items="categories" item-text="summary" item-value="id" v-model="category" :label="$t('label.category')" required></v-select>
+              <v-text-field :value="title" @change="v => title = v" :label="$t('label.title')"></v-text-field>
+              <v-textarea :value="content" @change="v => content = v" :label="$t('label.description')" rows="3"></v-textarea>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="success" v-if="!progressData" :disabled="!valid" @click="start"><v-icon>mdi-alarm</v-icon> Start</v-btn>
-              <v-btn color="success" v-if="progressData" :loading="loading" :disabled="!valid || loading" @click="finish"><v-icon>mdi-alarm-check</v-icon> Finish</v-btn>
+              <v-btn color="success" v-if="!progressData" :disabled="!valid" @click="start"><v-icon>mdi-alarm</v-icon> {{ $t('btn.start') }}</v-btn>
+              <v-btn color="success" v-if="progressData" :loading="loading" :disabled="!valid || loading" @click="finish"><v-icon>mdi-alarm-check</v-icon> {{ $t('btn.finish') }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -21,7 +21,7 @@
         <v-card>
           <v-card-title>
             <v-toolbar flat>
-              <v-toolbar-title>History</v-toolbar-title>
+              <v-toolbar-title>{{ $t('label.history') }}</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-btn icon @click="refreshData"><v-icon>mdi-refresh</v-icon></v-btn>
             </v-toolbar>
@@ -51,7 +51,7 @@
                   </v-list-item>
                 </template>
             </v-list>
-            <v-btn outlined block color="lime" :loading="readMoreLoading" :disabled="readMoreLoading"  @click="readMore">Read more</v-btn>
+            <v-btn outlined block color="lime" :loading="readMoreLoading" :disabled="readMoreLoading"  @click="readMore">{{ $t('label.readMore') }}</v-btn>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -60,29 +60,29 @@
     <!-- 수정 팝업 -->
     <v-dialog v-model="dialog" persistent max-width="600">
       <v-card>
-        <v-card-title class="headline">Modify</v-card-title>
+        <v-card-title class="headline">{{ $t('title.modify') }}</v-card-title>
         <v-card-text>
           <v-form ref="form" v-model="mod.valid">
               <v-text-field
                 v-model="mod.startTime"
-                label="Start Date Time"
+                :label="$t('label.startTime')"
                 type="datetime-local"
                 required
               ></v-text-field>
               <v-text-field
                 v-model="mod.endTime"
-                label="End Date Time"
+                :label="$t('label.endTime')"
                 type="datetime-local"
                 required
               ></v-text-field>
-              <v-text-field :value="mod.summary" @change="v => mod.summary = v" label="Title"></v-text-field>
-              <v-textarea :value="mod.description" @change="v => mod.description = v" label="Content" rows="3"></v-textarea>
+              <v-text-field :value="mod.summary" @change="v => mod.summary = v" :label="$t('label.title')"></v-text-field>
+              <v-textarea :value="mod.description" @change="v => mod.description = v" :label="$t('label.description')" rows="3"></v-textarea>
           </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" :loading="mod.loading" :disabled="mod.loading" text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="green darken-1" :loading="mod.loading" :disabled="!mod.valid || mod.loading" text @click="modify">Save</v-btn>
+          <v-btn color="green darken-1" :loading="mod.loading" :disabled="mod.loading" text @click="dialog = false">{{ $t('btn.cancel') }}</v-btn>
+          <v-btn color="green darken-1" :loading="mod.loading" :disabled="!mod.valid || mod.loading" text @click="modify">{{ $t('btn.save') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -229,7 +229,7 @@ export default {
     },
     getMinTime (item) {
       let min = Math.round((item.endDate - item.startDate) / (1000 * 60))
-      return `Total: ${min}Min`
+      return `${this.$t('label.total')}: ${min}${this.$t('label.min')}`
     },
     openModifyPopup (item) {
       this.dialog = true

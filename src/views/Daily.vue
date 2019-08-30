@@ -4,7 +4,7 @@
       <v-flex xs12 sm10 md8 lg8 xl6>
         <v-card>
           <v-card-title primary-title>
-            {{ $t('label.title.dailyStatistics') }}
+            {{ $t('title.dailyStatistics') }}
           </v-card-title>
           <v-card-text>
             <v-layout row wrap>
@@ -72,15 +72,15 @@
     <v-dialog v-model="clipboardDialog" max-width="600">
       <v-card>
         <v-card-title>
-          {{ $t('label.title.statisticsSummary') }}
+          {{ $t('title.statisticsSummary') }}
         </v-card-title>
         <v-card-text>
           <v-textarea solo v-model="clipboardText" ref="copyContainer"></v-textarea>
         </v-card-text>
         <v-card-actions>
           <div class="flex-grow-1"></div>
-          <v-btn color="primary" @click="doCopy">{{ $t('label.copy') }}</v-btn>
-          <v-btn color="secondary" @click="clipboardDialog = false">{{ $t('label.close') }}</v-btn>
+          <v-btn color="primary" @click="doCopy">{{ $t('btn.copy') }}</v-btn>
+          <v-btn color="secondary" @click="clipboardDialog = false">{{ $t('btn.close') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

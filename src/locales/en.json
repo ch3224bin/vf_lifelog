@@ -3,18 +3,41 @@
     "hours": "hours",
     "min": "min",
     "total": "Total",
-    "copy": "Copy",
-    "close": "Close",
-    "title": {
-      "dailyStatistics": "Daily statistics",
-      "statisticsSummary": "Statistic Summary"
-    }
+    "history": "History",
+    "readMore": "Read More",
+    "startTime": "Start Datetime",
+    "endTime": "End Datetime",
+    "title": "Title",
+    "description": "Description",
+    "category": "Category",
+    "summary": "Summary"
+  },
+  "title": {
+    "dailyStatistics": "Daily statistics",
+    "statisticsSummary": "Statistic Summary",
+    "modify": "Modify",
+    "addCategory": "Add Category"
+  },
+  "menu": {
+    "home": "Home",
+    "statistics": "Statistics",
+    "daily": "Daily",
+    "settings": "Settings",
+    "category": "Category",
+    "about": "About"
   },
   "btn": {
     "start": "Start",
     "finish": "Finish",
     "modify": "Modify",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "copy": "Copy",
+    "close": "Close",
+    "save": "Save",
+    "add": "Add"
+  },
+  "msg": {
+    "selectCategory": "Select calendars you want to use in LifeLog."
   },
   "message": "hello i18n !!"
 }

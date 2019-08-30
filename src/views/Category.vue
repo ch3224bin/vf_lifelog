@@ -4,7 +4,7 @@
       <v-flex xs12 sm10 md8 lg8 xl6>
         <v-card>
           <v-card-title primary-title>
-            Select calendars you want to use in LifeLog.
+            {{ $t('msg.selectCategory') }} 
           </v-card-title>
           <v-card-text>
             <v-list subheader>
@@ -43,23 +43,23 @@
     </v-layout>
     <v-dialog v-model="dialog" persistent max-width="290">
       <v-card>
-        <v-card-title class="headline">Add Calendar</v-card-title>
+        <v-card-title class="headline">{{ $t('title.addCategory') }}</v-card-title>
         <v-card-text>
           <v-form ref="form" v-model="calendar.valid">
               <v-text-field
                 v-model="calendar.summary"
-                label="Summary"
+                :label="$t('label.summary')"
               ></v-text-field>
               <v-text-field
                 v-model="calendar.description"
-                label="Description"
+                :label="$t('label.description')"
               ></v-text-field>
           </v-form>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="clearAdd">Cancel</v-btn>
-          <v-btn color="green darken-1" text @click="addCalendar">Add</v-btn>
+          <v-btn color="green darken-1" text @click="clearAdd">{{ $t('btn.cancel') }}</v-btn>
+          <v-btn color="green darken-1" text @click="addCalendar">{{ $t('btn.add') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

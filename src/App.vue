@@ -55,7 +55,7 @@
             v-else>
             <template v-slot:activator>
               <v-list-item-content>
-                <v-list-item-title v-text="item.title"></v-list-item-title>
+                <v-list-item-title v-t="item.code"></v-list-item-title>
               </v-list-item-content>
             </template>
             <v-list-item
@@ -64,7 +64,7 @@
               :to="subItem.to"
               link>
               <v-list-item-content>
-                <v-list-item-title v-text="subItem.title"></v-list-item-title>
+                <v-list-item-title v-t="subItem.code"></v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
@@ -102,12 +102,11 @@ export default {
   data: () => ({
     dialog: false,
     drawer: false,
-    langs: [{ id: 'ko', text: 'Koean' }, { id: 'en', text: 'English' }],
     menus: [
-      { title: 'Home', to: '/', icon: 'mdi-home' },
-      { title: '통계', icon: 'mdi-chart-pie', subMenus: [{ title: '일일', to: '/daily' }], active: true },
-      { title: '설정', icon: 'mdi-tools', subMenus: [{ title: '카테고리', to: '/category' }] },
-      { title: 'About', to: '/about', icon: 'mdi-help-box' }
+      { title: 'Home', code: 'menu.home', to: '/', icon: 'mdi-home' },
+      { title: '통계', code: 'menu.statistics', icon: 'mdi-chart-pie', subMenus: [{ title: '일일', code: 'menu.daily', to: '/daily' }], active: true },
+      { title: '설정', code: 'menu.settings', icon: 'mdi-tools', subMenus: [{ title: '카테고리', code: 'menu.category', to: '/category' }] },
+      { title: 'About', code: 'menu.about', to: '/about', icon: 'mdi-help-box' }
     ]
   }),
   methods: {
