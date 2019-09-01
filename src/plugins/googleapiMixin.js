@@ -1,7 +1,17 @@
+import Vue from 'vue'
+
+/* gapi에 어떻게 공통으로 로딩바를 넣을지 고민중 */
+async function pb (fn, args) {
+  Vue.prototype.$Progress.start()
+  let r = await fn(args)
+  Vue.prototype.$Progress.finish()
+  return r
+}
+
 export const gooleapiMixin = {
   methods: {
     getCategories () {
-      return this.$gapi.client.calendar.calendarList.list({})
+      return pb(this.$gapi.client.calendar.calendarList.list, {})
     },
     getEventsList (calendarId, { minDate, maxDate }) {
       let query = {
@@ -19,10 +29,10 @@ export const gooleapiMixin = {
         query.timeMax = (maxDate).toISOString()
       }
 
-      return this.$gapi.client.calendar.events.list(query)
+      return pb(this.$gapi.client.calendar.events.list, query)
     },
     updateEvent (eventBody, cb) {
-      return this.$gapi.client.calendar.events.update(eventBody).execute(cb)
+      return pb(this.$gapi.client.calendar.events.update(eventBody).execute, cb)
     }
   }
 }
