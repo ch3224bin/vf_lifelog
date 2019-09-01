@@ -26,7 +26,6 @@ let updateSigninStatus = (isSignedIn) => {
 Vue.prototype.$getGapiClient()
   .then(gapi => {
     Vue.prototype.$gapi = gapi
-    console.log(gapi)
     gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
     // Handle the initial sign-in state.
     updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())

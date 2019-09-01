@@ -31,8 +31,9 @@ export const gooleapiMixin = {
 
       return pb(this.$gapi.client.calendar.events.list, query)
     },
-    updateEvent (eventBody, cb) {
-      return pb(this.$gapi.client.calendar.events.update(eventBody).execute, cb)
+    async updateEvent (eventBody, cb) {
+      let r = await pb(this.$gapi.client.calendar.events.update, eventBody)
+      cb(r)
     }
   }
 }
