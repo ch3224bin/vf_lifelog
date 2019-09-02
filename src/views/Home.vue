@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { gooleapiMixin } from '../plugins/googleapiMixin'
+import gooleapiMixin from '../mixins/googleapiMixin'
 import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
 import router from '@/router'

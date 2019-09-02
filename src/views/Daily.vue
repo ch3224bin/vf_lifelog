@@ -58,7 +58,7 @@
 
 <script>
 import Datepicker from 'vuejs-datepicker'
-import { gooleapiMixin } from '../plugins/googleapiMixin'
+import gooleapiMixin from '../mixins/googleapiMixin'
 import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
 import { GChart } from 'vue-google-charts'

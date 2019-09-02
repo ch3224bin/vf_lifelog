@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { gooleapiMixin } from '../plugins/googleapiMixin'
+import gooleapiMixin from '../mixins/googleapiMixin'
 
 export default {
   mixins: [gooleapiMixin],
