@@ -105,7 +105,7 @@ export default {
       this.categories = JSON.parse(localStorage.getItem('categories'))
     },
     find (arr, name, value) {
-      for (let i in arr) {
+      for (var i in arr) {
         if (arr[i][name] === value) {
           return arr[i]
         }

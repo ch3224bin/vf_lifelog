@@ -32,7 +32,7 @@
         </v-expansion-panels>
       </v-card>
     </v-flex>
-    <v-flex v-if="items">
+    <v-flex v-if="items && items.length > 0">
       <v-card>
         <v-card-title>
           총 : {{ totalTime }}
@@ -50,6 +50,10 @@ export default {
   mixins: [dateFormatMixin],
   computed: {
     totalTime () {
+      if (!this.items || this.items.length === 0) {
+        return
+      }
+
       let totalMin =
         this.$_.map(this.items, o => this.getTotalMin(o))
           .reduce((a, b) => a + b)

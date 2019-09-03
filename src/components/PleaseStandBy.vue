@@ -5,7 +5,10 @@
     persistent
     width="300"
   >
-    <v-card color="primary" dark>
+    <v-card
+      color="primary"
+      dark
+    >
       <v-card-text>
         {{ msg }}
         <v-progress-linear
@@ -27,3 +30,4 @@ export default {
     }
   }
 }
+</script>
