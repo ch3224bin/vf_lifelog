@@ -53,8 +53,8 @@ const waitGapiLoad = () => {
 }
 
 router.beforeEach((to, from, next) => {
+  // TODO about 제외하고 로그인 안되어 있으면 signin으로 이동
   Vue.prototype.$standby.show()
-  Vue.prototype.$Progress.start()
   waitGapiLoad()
     .then(() => next())
     .catch(e => console.log(e.message))
@@ -62,7 +62,6 @@ router.beforeEach((to, from, next) => {
 
 router.afterEach((to, from) => {
   Vue.prototype.$standby.hide()
-  Vue.prototype.$Progress.finish()
 })
 
 export default router
