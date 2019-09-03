@@ -32,6 +32,13 @@
         </v-expansion-panels>
       </v-card>
     </v-flex>
+    <v-flex v-if="items">
+      <v-card>
+        <v-card-title>
+          총 : {{ totalTime }}
+        </v-card-title>
+      </v-card>
+    </v-flex>
   </v-layout>
 </template>
 
@@ -41,6 +48,14 @@ import { dateFormatMixin } from '../mixins/dateformat'
 export default {
   props: [ 'items' ],
   mixins: [dateFormatMixin],
+  computed: {
+    totalTime () {
+      let totalMin =
+        this.$_.map(this.items, o => this.getTotalMin(o))
+          .reduce((a, b) => a + b)
+      return this.getMinToHourMinFormat(totalMin)
+    }
+  },
   methods: {
     mdToHtml (text) {
       return this.$sdConverter.makeHtml(text)
