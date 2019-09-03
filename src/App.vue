@@ -100,7 +100,6 @@ export default {
     LangsSelector
   },
   data: () => ({
-    dialog: false,
     drawer: false,
     menus: [
       { title: 'Home', code: 'menu.home', to: '/', icon: 'mdi-home' },

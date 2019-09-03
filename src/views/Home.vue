@@ -132,7 +132,7 @@ export default {
     initCategories () {
       this.categories = JSON.parse(localStorage.getItem('categories'))
       if (!this.categories) {
-        this.$toasted.global.info('Please select calendars.')
+        this.$toasted.global.info(this.$t('msg.selectCategory'))
         router.push('/category')
       }
     },
@@ -163,7 +163,7 @@ export default {
         this.progressData = ''
         this.title = this.content = ''
         localStorage.removeItem('progress_data')
-        this.$toasted.global.okay('Saved.')
+        this.$toasted.global.okay(this.$t('msg.saved'))
         this.loading = false
         this.refreshData()
       })
@@ -261,7 +261,7 @@ export default {
         this.mod.item.description = this.mod.description
         this.mod.loading = false
         this.dialog = false
-        this.$toasted.global.okay('Modified.')
+        this.$toasted.global.okay(this.$t('msg.modified'))
       })
     },
     mdToHtml (text) {
@@ -288,6 +288,7 @@ export default {
       minDate: null,
       maxDate: null,
       dialog: false,
+      dialog1: true,
       mod: { valid: false, loading: false, item: null, summary: '', description: '', startTime: '', endTime: '' }
     }
   }

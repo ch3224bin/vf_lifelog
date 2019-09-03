@@ -9,33 +9,42 @@
           <v-card-text>
             <v-layout row wrap>
               <v-flex xs12 sm12 md12 lg12 xl12>
-                <v-row no-gutters>
-                  <v-col cols="6">
-                    <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" :language="$store.datePickerLocale"></datepicker>
-                  </v-col>
-                  <v-col cols="6" class="text-right">
-                    <v-btn class="mx-2" color="primary" fab small dark @click="loadData"><v-icon>mdi-magnify</v-icon></v-btn>
-                    <v-btn class="mx-2" color="green" fab small dark @click="toggleChart = !toggleChart">
-                      <v-icon>mdi-chart-bar</v-icon>
-                    </v-btn>
-                    <v-btn class="mx-2" color="green" fab small dark @click="openClipboardDialog">
-                      <v-icon>mdi-clipboard-text</v-icon>
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-flex>
-              <v-flex v-if="toggleChart" xs12 sm12 md12 lg12 xl12>
-                <g-chart
-                  type="PieChart"
-                  :data="chartData"
-                  :options="chartOptions"
-                  style="min-height: 330px;"
-                  />
+                <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" :language="$store.datePickerLocale"></datepicker>
               </v-flex>
             </v-layout>
-            <statement-of-life :items="items" />
           </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-row>
+              <v-col>
+                <v-btn block color="primary" @click="loadData"><v-icon left>mdi-magnify</v-icon>검색</v-btn>
+              </v-col>
+              <v-col>
+                <v-btn block color="success" @click="toggleChart = !toggleChart">
+                  <v-icon left>mdi-chart-bar</v-icon>
+                  차트
+                </v-btn>
+              </v-col>
+              <v-col>
+                <v-btn block color="success" @click="openClipboardDialog">
+                  <v-icon left>mdi-clipboard-text</v-icon>
+                  텍스트
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-actions>
         </v-card>
+      </v-flex>
+      <v-flex v-if="toggleChart" xs12 sm10 md8 lg8 xl6>
+        <g-chart
+          type="PieChart"
+          :data="chartData"
+          :options="chartOptions"
+          style="min-height: 330px;"
+          />
+      </v-flex>
+      <v-flex xs12 sm10 md8 lg8 xl6>
+        <statement-of-life :items="items" />
       </v-flex>
     </v-layout>
     <v-dialog v-model="clipboardDialog" max-width="600">
@@ -159,11 +168,10 @@ export default {
       this.clipboardDialog = true
     },
     doCopy () {
-      let toasted = this.$toasted
-      this.$copyText(this.clipboardText, this.$refs.copyContainer.$el).then(function (e) {
-        toasted.global.okay('클립보드에 복사되었습니다.')
-      }, function (e) {
-        toasted.global.error('Failed to copy texts')
+      this.$copyText(this.clipboardText, this.$refs.copyContainer.$el).then((e) => {
+        this.$toasted.global.okay(this.$t('msg.copiedClipboard'))
+      }, (e) => {
+        this.$toasted.global.error('Failed to copy texts')
       })
     }
   }

@@ -42,26 +42,27 @@
       </v-flex>
     </v-layout>
     <v-dialog v-model="dialog" persistent max-width="290">
-      <v-card>
-        <v-card-title class="headline">{{ $t('title.addCategory') }}</v-card-title>
-        <v-card-text>
-          <v-form ref="form" v-model="calendar.valid">
-              <v-text-field
-                v-model="calendar.summary"
-                :label="$t('label.summary')"
-              ></v-text-field>
-              <v-text-field
-                v-model="calendar.description"
-                :label="$t('label.description')"
-              ></v-text-field>
-          </v-form>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="clearAdd">{{ $t('btn.cancel') }}</v-btn>
-          <v-btn color="green darken-1" text @click="addCalendar">{{ $t('btn.add') }}</v-btn>
-        </v-card-actions>
-      </v-card>
+      <v-form ref="form" v-model="calendar.valid">
+        <v-card>
+          <v-card-title class="headline">{{ $t('title.addCategory') }}</v-card-title>
+          <v-card-text>
+            <v-text-field
+              v-model="calendar.summary"
+              :label="$t('label.summary')"
+              required
+            ></v-text-field>
+            <v-text-field
+              v-model="calendar.description"
+              :label="$t('label.description')"
+            ></v-text-field>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" text @click="clearAdd">{{ $t('btn.cancel') }}</v-btn>
+            <v-btn color="green darken-1" text :loading="calendar.loading" :disabled="!calendar.valid || calendar.loading" @click="addCalendar">{{ $t('btn.add') }}</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-form>
     </v-dialog>
   </v-container>
 </template>
@@ -113,15 +114,17 @@ export default {
       this.dialog = true
     },
     addCalendar () {
+      this.calendar.loading = true
       this.$gapi.client.calendar.calendars.insert(this.calendar)
         .execute((c) => {
-          this.$toasted.global.okay('Added.')
+          this.$toasted.global.okay(this.$t('msg.added'))
           this.initCategories()
           this.clearAdd()
+          this.calendar.loading = false
         })
     },
     clearAdd () {
-      this.calendar = { valid: false, summary: '', description: '' }
+      this.$refs.form.reset()
       this.dialog = false
     }
   },
@@ -129,7 +132,7 @@ export default {
     return {
       categories: '',
       dialog: false,
-      calendar: { valid: false, summary: '', description: '' }
+      calendar: { valid: false, summary: '', description: '', loading: false }
     }
   }
 }

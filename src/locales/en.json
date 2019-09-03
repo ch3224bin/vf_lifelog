@@ -37,7 +37,11 @@
     "add": "Add"
   },
   "msg": {
-    "selectCategory": "Select calendars you want to use in LifeLog."
+    "selectCategory": "Select calendars you want to use in LifeLog.",
+    "saved": "Saved.",
+    "modified": "Modified.",
+    "added": "Added.",
+    "copiedClipboard": "Copied to clipboard."
   },
   "message": "hello i18n !!"
 }

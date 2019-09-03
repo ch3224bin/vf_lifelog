@@ -53,6 +53,7 @@ const waitGapiLoad = () => {
 }
 
 router.beforeEach((to, from, next) => {
+  Vue.prototype.$standby.show()
   Vue.prototype.$Progress.start()
   waitGapiLoad()
     .then(() => next())
@@ -60,6 +61,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach((to, from) => {
+  Vue.prototype.$standby.hide()
   Vue.prototype.$Progress.finish()
 })
 
