@@ -16,7 +16,8 @@
     "dailyStatistics": "일일통계",
     "statisticsSummary": "통계 요약",
     "modify": "수정하기",
-    "addCategory": "카테고리 추가"
+    "addCategory": "카테고리 추가",
+    "signin": "로그인"
   },
   "menu": {
     "home": "Home",
@@ -41,7 +42,8 @@
     "saved": "저장되었습니다.",
     "modified": "수정되었습니다.",
     "added": "추가되었습니다.",
-    "copiedClipboard": "클립보드에 복사되었습니다."
+    "copiedClipboard": "클립보드에 복사되었습니다.",
+    "signinWithGoogle": "Google 계정으로 로그인"
   },
   "message": "hello i18n !!"
 }

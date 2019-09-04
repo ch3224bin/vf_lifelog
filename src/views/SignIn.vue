@@ -4,11 +4,11 @@
       <v-flex xs12 sm10 md8 xl6>
         <v-card>
           <v-card-title primary-title>
-            Sign In
+            {{ $t('title.signin') }}
           </v-card-title>
           <v-card-actions class="justify-center">
-              <v-btn @click="signIn" text outlined>
-                <span class="sign-up-text">Sign in with Google</span>
+              <v-btn @click="signIn" block text outlined>
+                <span class="sign-up-text">{{ $t('msg.signinWithGoogle') }}</span>
               </v-btn>
           </v-card-actions>
         </v-card>

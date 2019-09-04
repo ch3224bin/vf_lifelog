@@ -115,6 +115,7 @@ export default {
     logout () {
       this.$gapi.auth2.getAuthInstance().signOut().then(() => {
         this.$store.state.user = null
+        this.$router.push('/signin')
       })
     }
   }

@@ -16,7 +16,8 @@
     "dailyStatistics": "Daily statistics",
     "statisticsSummary": "Statistic Summary",
     "modify": "Modify",
-    "addCategory": "Add Category"
+    "addCategory": "Add Category",
+    "signin": "Sign In"
   },
   "menu": {
     "home": "Home",
@@ -41,7 +42,8 @@
     "saved": "Saved.",
     "modified": "Modified.",
     "added": "Added.",
-    "copiedClipboard": "Copied to clipboard."
+    "copiedClipboard": "Copied to clipboard.",
+    "signinWithGoogle": "Sign in with Google"
   },
   "message": "hello i18n !!"
 }

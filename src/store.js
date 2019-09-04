@@ -8,7 +8,8 @@ export default new Vuex.Store({
     user: null,
     isSignIn: false,
     gapiLoaded: false,
-    datePickerLocale: null
+    datePickerLocale: null,
+    btnLoading: false
   },
   mutations: {
     setUser (state, user) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
     },
     setDatePickerLocale (state, datePickerLocale) {
       state.datePickerLocale = datePickerLocale
+    },
+    setBtnLoading (state, btnLoading) {
+      state.btnLoading = btnLoading
     }
   },
   actions: {

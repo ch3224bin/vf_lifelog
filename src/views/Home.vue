@@ -12,7 +12,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="success" v-if="!progressData" :disabled="!valid" @click="start"><v-icon>mdi-alarm</v-icon> {{ $t('btn.start') }}</v-btn>
-              <v-btn color="success" v-if="progressData" :loading="loading" :disabled="!valid || loading" @click="finish"><v-icon>mdi-alarm-check</v-icon> {{ $t('btn.finish') }}</v-btn>
+              <v-btn color="success" v-if="progressData" :loading="btnLoading" :disabled="!valid || btnLoading" @click="finish"><v-icon>mdi-alarm-check</v-icon> {{ $t('btn.finish') }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -51,7 +51,7 @@
                   </v-list-item>
                 </template>
             </v-list>
-            <v-btn outlined block color="lime" :loading="readMoreLoading" :disabled="readMoreLoading"  @click="readMore">{{ $t('label.readMore') }}</v-btn>
+            <v-btn outlined block color="lime" :loading="btnLoading" :disabled="btnLoading"  @click="readMore">{{ $t('label.readMore') }}</v-btn>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -81,8 +81,8 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="green darken-1" :loading="mod.loading" :disabled="mod.loading" text @click="dialog = false">{{ $t('btn.cancel') }}</v-btn>
-          <v-btn color="green darken-1" :loading="mod.loading" :disabled="!mod.valid || mod.loading" text @click="modify">{{ $t('btn.save') }}</v-btn>
+          <v-btn color="green darken-1" :loading="btnLoading" :disabled="btnLoading" text @click="dialog = false">{{ $t('btn.cancel') }}</v-btn>
+          <v-btn color="green darken-1" :loading="btnLoading" :disabled="!mod.valid || btnLoading" text @click="modify">{{ $t('btn.save') }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -155,34 +155,28 @@ export default {
         }
       }
 
-      this.loading = true
-      this.$gapi.client.calendar.events.insert({
+      this.insertEvent({
         'calendarId': calendarId,
         'resource': event
-      }).execute(event => {
+      }).then(event => {
         this.progressData = ''
         this.title = this.content = ''
         localStorage.removeItem('progress_data')
         this.$toasted.global.okay(this.$t('msg.saved'))
-        this.loading = false
         this.refreshData()
       })
     },
     /* 이벤트 기록 가져오기 */
     refreshData () {
-      this.minDate = new Date(this.currentDate.getTime() - (ONE_DAY * 7))
+      this.minDate = new Date(this.currentDate.getTime() - (ONE_DAY * 3))
       this.maxDate = new Date(this.currentDate.getTime() + ONE_DAY)
       this.events = null
       this.getData()
     },
     readMore () {
       this.maxDate = this.minDate
-      this.minDate = new Date(this.minDate.getTime() - (ONE_DAY * 7))
-      this.readMoreLoading = true
+      this.minDate = new Date(this.minDate.getTime() - (ONE_DAY * 3))
       this.getData()
-        .subscribe(() => {
-          this.readMoreLoading = false
-        })
     },
     getData () {
       if (!this.$store.state.isSignIn) {
@@ -241,7 +235,6 @@ export default {
       this.mod.description = item.description
     },
     modify () {
-      this.mod.loading = true
       this.updateEvent({
         'calendarId': this.mod.item.organizer.email,
         'eventId': this.mod.item.id,
@@ -253,13 +246,12 @@ export default {
         'end': {
           'dateTime': new Date(this.mod.endTime).toISOString()
         }
-      }, (event) => {
+      }).then(event => {
         // 수정 내용 화면의 event에 적용
         this.mod.item.startDate = new Date(this.mod.startTime)
         this.mod.item.endDate = new Date(this.mod.endTime)
         this.mod.item.summary = this.mod.summary
         this.mod.item.description = this.mod.description
-        this.mod.loading = false
         this.dialog = false
         this.$toasted.global.okay(this.$t('msg.modified'))
       })
@@ -278,8 +270,6 @@ export default {
       category: '',
       title: '',
       content: '',
-      loading: false,
-      readMoreLoading: false,
       progressData: '',
       valid: false,
       categories: '',
@@ -288,8 +278,7 @@ export default {
       minDate: null,
       maxDate: null,
       dialog: false,
-      dialog1: true,
-      mod: { valid: false, loading: false, item: null, summary: '', description: '', startTime: '', endTime: '' }
+      mod: { valid: false, item: null, summary: '', description: '', startTime: '', endTime: '' }
     }
   }
 }

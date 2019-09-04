@@ -53,10 +53,20 @@ const waitGapiLoad = () => {
 }
 
 router.beforeEach((to, from, next) => {
-  // TODO about 제외하고 로그인 안되어 있으면 signin으로 이동
   Vue.prototype.$standby.show()
   waitGapiLoad()
-    .then(() => next())
+    .then(() => {
+      if (!/about|signin/.test(to.path) && !store.state.isSignIn) {
+        /* 로그인이 안되어 있으면 로그인 화면으로 */
+        if (/about|signin/.test(from.path)) {
+          // 같은 path로 이동시 네비게이션 이동 없음
+          Vue.prototype.$standby.hide()
+        }
+        next('/signin')
+        return
+      }
+      next()
+    })
     .catch(e => console.log(e.message))
 })
 
