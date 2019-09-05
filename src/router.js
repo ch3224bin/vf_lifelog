@@ -27,7 +27,12 @@ const router = new Router({
     {
       path: '/daily',
       name: 'daily',
-      component: () => import('./views/Daily.vue')
+      component: () => import('./views/Statistics.vue')
+    },
+    {
+      path: '/weekly',
+      name: 'weekly',
+      component: () => import('./views/Statistics.vue')
     },
     {
       path: '/about',

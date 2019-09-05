@@ -1,18 +1,10 @@
 <template>
   <v-container grid-list-md>
     <v-layout row wrap justify-center>
-      <v-flex xs12 sm10 md8 lg8 xl6>
+      <v-flex xs12 sm10 md8 lg8 xl8>
         <v-card>
-          <v-card-title primary-title>
-            {{ $t('title.dailyStatistics') }}
-          </v-card-title>
-          <v-card-text>
-            <v-layout row wrap>
-              <v-flex xs12 sm12 md12 lg12 xl12>
-                <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" :language="$store.datePickerLocale"></datepicker>
-              </v-flex>
-            </v-layout>
-          </v-card-text>
+          <!-- 검색조건 컴포넌트 동적 적용 -->
+          <component :is="currentSearchView" @select="setDate" />
           <v-divider></v-divider>
           <v-card-actions>
             <v-row>
@@ -35,7 +27,7 @@
           </v-card-actions>
         </v-card>
       </v-flex>
-      <v-flex v-if="toggleChart" xs12 sm10 md8 lg8 xl6>
+      <v-flex v-if="toggleChart" xs12 sm10 md8 lg8 xl8>
         <g-chart
           type="PieChart"
           :data="chartData"
@@ -66,32 +58,43 @@
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker'
 import gooleapiMixin from '../mixins/googleapiMixin'
 import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
 import { GChart } from 'vue-google-charts'
 import StatementOfLife from '@/components/StatementOfLife'
 import { dateFormatMixin } from '../mixins/dateformat'
+import { DailySearch, WeeklySearch } from '@/components/searchviews'
 
-const ONE_DAY_MILLS = 1000 * 60 * 60 * 24
+const searchViews = {
+  'daily': DailySearch,
+  'weekly': WeeklySearch
+}
 
 export default {
   components: {
-    Datepicker, GChart, StatementOfLife
+    GChart, StatementOfLife, DailySearch
   },
   mixins: [gooleapiMixin, dateFormatMixin],
   created () {
     this.initCategories()
+    this.initView()
+  },
+  watch: {
+    '$route' () {
+      this.initView()
+    }
   },
   data () {
     return {
-      date: new Date(),
+      minDate: null,
+      maxDate: null,
       events: null,
       categories: null,
       items: [],
       toggleChart: false,
       chartData: null,
+      currentSearchView: DailySearch,
       chartOptions: {
         pieSliceText: 'value',
         legend: { position: 'top' }
@@ -104,6 +107,12 @@ export default {
     initCategories () {
       this.categories = JSON.parse(localStorage.getItem('categories'))
     },
+    initView () {
+      this.currentSearchView = searchViews[this.$route.name]
+      this.items = []
+      this.chartData = null
+      this.toggleChart = false
+    },
     find (arr, name, value) {
       for (var i in arr) {
         if (arr[i][name] === value) {
@@ -112,12 +121,13 @@ export default {
       }
       return ''
     },
+    setDate (o) {
+      this.minDate = o.minDate
+      this.maxDate = o.maxDate
+    },
     loadData () {
-      let minDate = new Date(this.date.toDateString())
-      let maxDate = new Date(minDate.getTime() + ONE_DAY_MILLS)
-
       from(this.categories).pipe(
-        mergeMap(c => this.getEventsList(c.id, { minDate: minDate, maxDate: maxDate })),
+        mergeMap(c => this.getEventsList(c.id, { minDate: this.minDate, maxDate: this.maxDate })),
         map(res => res.result.items),
         reduce((a, b) => a.concat(b))
       ).subscribe(r => {

@@ -1,0 +1,101 @@
+<template>
+  <v-container>
+    <v-card-title primary-title>
+      {{ $t('title.weeklyStatistics') }}
+    </v-card-title>
+    <v-card-text>
+      <v-row>
+        <v-col>
+          <v-btn fab text samll @click="prev">
+            <v-icon small>mdi-chevron-left</v-icon>
+          </v-btn>
+          <span class="mx-3">{{ week }}</span>
+          <v-btn fab text small @click="next">
+            <v-icon small>mdi-chevron-right</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col>
+          <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" :language="$store.datePickerLocale"></datepicker>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-container>
+</template>
+
+<script>
+import Datepicker from 'vuejs-datepicker'
+
+const ONE_DAY_MILLS = 1000 * 60 * 60 * 24
+const A_WEEK_MILLS = ONE_DAY_MILLS * 7
+
+export default {
+  components: {
+    Datepicker
+  },
+  mounted () {
+    this.date = new Date()
+  },
+  computed: {
+    week () {
+      return this.getWeek()
+    }
+  },
+  watch: {
+    date () {
+      let minDate = this.getMonday(this.date)
+      let maxDate = this.getSunday(this.date)
+
+      this.$emit('select', { minDate, maxDate })
+    }
+  },
+  methods: {
+    getWeek () {
+      let firstDayOfYear = this.getFirstDayOfYear(this.date)
+      let monday = this.getMonday(firstDayOfYear)
+      return `${firstDayOfYear.getFullYear()}년 ${Math.ceil((this.date.getTime() - monday.getTime() + ONE_DAY_MILLS) / A_WEEK_MILLS)}주`
+    },
+    getFirstDayOfYear (currDate) {
+      let fd = new Date(`${currDate.getFullYear()}-01-01`)
+      if (fd.getDay() === 0 || fd.getDay() > 3) {
+        if (this.getMonday(currDate).getFullYear() === currDate.getFullYear() - 1) {
+          return this.getFirstDayOfYear(new Date(fd.getTime() - A_WEEK_MILLS))
+        } else {
+          return new Date(fd.getTime() + A_WEEK_MILLS)
+        }
+      } else {
+        if (this.getWedday(currDate).getFullYear() === currDate.getFullYear() + 1) {
+          return this.getFirstDayOfYear(new Date(currDate.getTime() + A_WEEK_MILLS))
+        }
+      }
+      return fd
+    },
+    getMonday (date) {
+      let day = date.getDay()
+      let diff = day - 1
+      if (diff === -1) {
+        diff = 6
+      }
+      return new Date(date.getTime() - (diff * ONE_DAY_MILLS))
+    },
+    getWedday (date) {
+      let monday = this.getMonday(date)
+      return new Date(monday.getTime() + (2 * ONE_DAY_MILLS))
+    },
+    getSunday (date) {
+      let monday = this.getMonday(date)
+      return new Date(monday.getTime() + A_WEEK_MILLS)
+    },
+    prev () {
+      this.date = new Date(this.date.getTime() - A_WEEK_MILLS)
+    },
+    next () {
+      this.date = new Date(this.date.getTime() + A_WEEK_MILLS)
+    }
+  },
+  data () {
+    return {
+      date: new Date()
+    }
+  }
+}
+</script>

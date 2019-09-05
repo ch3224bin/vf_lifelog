@@ -14,6 +14,7 @@
   },
   "title": {
     "dailyStatistics": "Daily statistics",
+    "weeklyStatistics": "Weekly statistics",
     "statisticsSummary": "Statistic Summary",
     "modify": "Modify",
     "addCategory": "Add Category",
@@ -23,6 +24,7 @@
     "home": "Home",
     "statistics": "Statistics",
     "daily": "Daily",
+    "weekly": "Weekly",
     "settings": "Settings",
     "category": "Category",
     "about": "About"
