@@ -4,7 +4,21 @@
       {{ $t('title.dailyStatistics') }}
     </v-card-title>
     <v-card-text>
-      <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" :language="$store.datePickerLocale"></datepicker>
+      <v-row no-gutters align="center" justify="center">
+        <v-col cols="1">
+          <v-btn fab text samll @click="prev">
+            <v-icon small>mdi-chevron-left</v-icon>
+          </v-btn>
+        </v-col>
+        <v-col cols="6" md="4">
+          <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" input-class="datepicker-input" :language="$store.datePickerLocale"></datepicker>
+        </v-col>
+        <v-col cols="1">
+          <v-btn fab text small @click="next">
+            <v-icon small>mdi-chevron-right</v-icon>
+          </v-btn>
+        </v-col>
+      </v-row>
     </v-card-text>
   </v-container>
 </template>
@@ -27,6 +41,12 @@ export default {
       let maxDate = new Date(minDate.getTime() + ONE_DAY_MILLS)
 
       this.$emit('select', { minDate, maxDate })
+    }
+  },
+  methods: {
+    prev () {
+    },
+    next () {
     }
   },
   data () {

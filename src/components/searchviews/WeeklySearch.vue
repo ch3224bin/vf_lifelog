@@ -4,8 +4,8 @@
       {{ $t('title.weeklyStatistics') }}
     </v-card-title>
     <v-card-text>
-      <v-row>
-        <v-col>
+      <v-row no-gutters align="center" justify="center">
+        <v-col cols="12" class="text-center">
           <v-btn fab text samll @click="prev">
             <v-icon small>mdi-chevron-left</v-icon>
           </v-btn>
@@ -14,8 +14,10 @@
             <v-icon small>mdi-chevron-right</v-icon>
           </v-btn>
         </v-col>
-        <v-col>
-          <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" :language="$store.datePickerLocale"></datepicker>
+      </v-row>
+      <v-row no-gutters align="center" justify="center">
+        <v-col cols="6">
+          <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" input-class="datepicker-input" :language="$store.datePickerLocale"></datepicker>
         </v-col>
       </v-row>
     </v-card-text>

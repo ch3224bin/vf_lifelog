@@ -187,3 +187,10 @@ export default {
   }
 }
 </script>
+<style>
+.datepicker-input {
+  padding: 0.5em 0.5em 0.25em 0.5em;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+}
+</style>
