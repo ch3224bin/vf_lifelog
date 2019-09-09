@@ -8,7 +8,7 @@ Vue.use(Toasted, {
 Vue.toasted.register('okay', (payload) => {
   return payload
 }, {
-  icon: 'mdi-hand-okay',
+  icon: 'mdi-check-bold',
   position: 'bottom-center',
   duration: 3000,
   className: 'success'

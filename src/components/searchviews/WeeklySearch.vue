@@ -16,6 +16,11 @@
         </v-col>
       </v-row>
       <v-row no-gutters align="center" justify="center">
+        <v-col cols="6" class="text-center">
+          {{ dateTerm }}
+        </v-col>
+      </v-row>
+      <v-row no-gutters align="center" justify="center">
         <v-col cols="6">
           <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" input-class="datepicker-input" :language="$store.datePickerLocale"></datepicker>
         </v-col>
@@ -40,14 +45,17 @@ export default {
   computed: {
     week () {
       return this.getWeek()
+    },
+    dateTerm () {
+      return `${this.minDate.format('yyyy-MM-dd')} ~ ${new Date(this.maxDate.getTime() - ONE_DAY_MILLS).format('yyyy-MM-dd')}`
     }
   },
   watch: {
     date () {
-      let minDate = this.getMonday(this.date)
-      let maxDate = this.getSunday(this.date)
+      this.minDate = this.getMonday(this.date)
+      this.maxDate = this.getSunday(this.date)
 
-      this.$emit('select', { minDate, maxDate })
+      this.$emit('select', { minDate: this.minDate, maxDate: this.maxDate })
     }
   },
   methods: {
@@ -96,6 +104,8 @@ export default {
   },
   data () {
     return {
+      minDate: null,
+      maxDate: null,
       date: new Date()
     }
   }

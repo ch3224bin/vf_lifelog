@@ -4,7 +4,7 @@ import PleaseStandBy from '../components/PleaseStandBy.vue'
 
 let StandByPlugin = {
   install (Vue) {
-    const DEFAULT_MESSAGE = 'Please stand by'
+    const DEFAULT_MESSAGE = 'Loading...'
     let Component = Vue.extend(PleaseStandBy)
     let instance = new Component({
       vuetify: vuetify

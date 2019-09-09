@@ -10,7 +10,10 @@
     "title": "Title",
     "description": "Description",
     "category": "Category",
-    "summary": "Summary"
+    "summary": "Summary",
+    "modify" : "Modify",
+    "copyToInputForm": "Copy to input form",
+    "loading": "Loading..."
   },
   "title": {
     "dailyStatistics": "Daily statistics",

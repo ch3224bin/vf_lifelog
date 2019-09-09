@@ -26,7 +26,7 @@ export default {
   data () {
     return {
       dialog: false,
-      msg: 'Please stand by'
+      msg: 'Loading...'
     }
   }
 }

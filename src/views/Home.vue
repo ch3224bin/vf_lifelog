@@ -46,7 +46,23 @@
                     </v-list-item-content>
                     <v-list-item-action>
                       <v-list-item-action-text v-text="getMinTime(item)"></v-list-item-action-text>
-                      <v-btn icon @click="openModifyPopup(item)"><v-icon>mdi-settings</v-icon></v-btn>
+                      <v-menu offset-y>
+                        <template v-slot:activator="{ on }">
+                          <v-btn icon v-on="on"><v-icon>mdi-dots-horizontal</v-icon></v-btn>
+                        </template>
+                        <v-list>
+                          <v-list-item
+                            @click="openModifyPopup(item)"
+                          >
+                            <v-list-item-title>{{ $t('label.modify') }}</v-list-item-title>
+                          </v-list-item>
+                          <v-list-item
+                            @click="coptToProgress(item)"
+                          >
+                            <v-list-item-title>{{ $t('label.copyToInputForm') }}</v-list-item-title>
+                          </v-list-item>
+                        </v-list>
+                      </v-menu>
                     </v-list-item-action>
                   </v-list-item>
                 </template>
@@ -263,7 +279,12 @@ export default {
       this.progressData.title = this.title
       this.progressData.content = this.content
       localStorage.setItem('progress_data', JSON.stringify(this.progressData))
-    }, 300)
+    }, 300),
+    coptToProgress (item) {
+      this.category = item.organizer.email
+      this.title = item.summary
+      this.content = item.description
+    }
   },
   data () {
     return {
