@@ -179,13 +179,16 @@ export default {
         this.title = this.content = ''
         localStorage.removeItem('progress_data')
         this.$toasted.global.okay(this.$t('msg.saved'))
-        this.refreshData()
+        this.addOriginalList(event.result)
+        this.events = null
+        this.makeEventListAfterSortAndDivide()
       })
     },
     /* 이벤트 기록 가져오기 */
     refreshData () {
       this.minDate = new Date(this.currentDate.getTime() - (ONE_DAY * 3))
       this.maxDate = new Date(this.currentDate.getTime() + ONE_DAY)
+      this.originalList = []
       this.events = null
       this.getData()
     },
@@ -206,32 +209,37 @@ export default {
       )
 
       pub.subscribe(r => {
-        // 각 event에 start, end를 Date형으로 하나씩 넣어줬다.
-        r.forEach(item => {
-          item.startDate = new Date(item.start.dateTime)
-          item.endDate = new Date(item.end.dateTime)
-        })
-
-        // 날짜별로 subheader를 끼워 넣는다.
-        let eventList = this.$_.orderBy(r, ['startDate'], 'desc')
-        let resultList = []
-        let lastDate
-        eventList.forEach((item) => {
-          let startDate = item.startDate.format('yyyy-MM-dd E')
-          if (lastDate !== startDate) {
-            resultList.push({ header: startDate, date: item.startDate })
-            lastDate = startDate
-          }
-          resultList.push(item)
-        })
-        if (this.events === null) {
-          this.events = resultList
-        } else {
-          this.events = this.events.concat(resultList)
-        }
+        // insert시 api 재호출을 하지 않기위해 r을 보관한다.
+        r.forEach(this.addOriginalList)
+        this.makeEventListAfterSortAndDivide()
       })
 
       return pub
+    },
+    addOriginalList (item) {
+      // 각 event에 start, end를 Date형으로 하나씩 넣어줬다.
+      item.startDate = new Date(item.start.dateTime)
+      item.endDate = new Date(item.end.dateTime)
+      this.originalList.push(item)
+    },
+    makeEventListAfterSortAndDivide () {
+      // 날짜별로 subheader를 끼워 넣는다.
+      let eventList = this.$_.orderBy(this.originalList, ['startDate'], 'desc')
+      let resultList = []
+      let lastDate
+      eventList.forEach((item) => {
+        let startDate = item.startDate.format('yyyy-MM-dd E')
+        if (lastDate !== startDate) {
+          resultList.push({ header: startDate, date: item.startDate })
+          lastDate = startDate
+        }
+        resultList.push(item)
+      })
+      if (this.events === null) {
+        this.events = resultList
+      } else {
+        this.events = this.events.concat(resultList)
+      }
     },
     /* 시간 표시 */
     getDateTime (item) {
@@ -294,6 +302,7 @@ export default {
       progressData: '',
       valid: false,
       categories: '',
+      originalList: [],
       events: null,
       currentDate: new Date(new Date().toDateString()),
       minDate: null,
