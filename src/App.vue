@@ -70,9 +70,11 @@
           </v-list-group>
         </template>
       </v-list>
-      <v-footer v-if="$store.state.user" absolute>
-        <v-btn block outlined small @click="logout">Sign Out</v-btn>
-      </v-footer>
+      <template v-slot:append v-if="$store.state.user">
+        <div class="pa-2">
+          <v-btn block outlined small @click="logout">Sign Out</v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
     <v-app-bar app color="lime">
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
