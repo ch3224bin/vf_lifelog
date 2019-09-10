@@ -17,12 +17,13 @@
               <v-btn color="success" v-if="!progressData" :disabled="!valid" @click="start"><v-icon>mdi-alarm</v-icon> {{ $t('btn.start') }}</v-btn>
               <v-btn color="success" v-if="progressData" :loading="btnLoading" :disabled="!valid || btnLoading" @click="finish"><v-icon>mdi-alarm-check</v-icon> {{ $t('btn.finish') }}</v-btn>
             </v-card-actions>
+            <!-- 빠른입력 시작 -->
             <v-expand-transition>
               <div v-show="expand.show">
                 <v-card-text>
                   <v-form ref="expandForm" v-model="expand.valid">
                     <v-row align="center">
-                      <v-col cols="6" md="2">
+                      <v-col cols="6" md="4" lg="3">
                         <v-text-field
                           :value="expand.min"
                           @change="v => expand.min = v"
@@ -48,10 +49,12 @@
                 </v-card-text>
               </div>
             </v-expand-transition>
+            <!-- 빠른입력 끝-->
           </v-card>
         </v-form>
       </v-col>
-      <v-col cols="12" sm="10" md="8" lx="6">
+      <!-- 이력 시작 -->
+      <v-col cols="12" sm="10" md="8" xl="6">
         <v-card>
           <v-card-title>
             <v-toolbar flat>
@@ -105,8 +108,8 @@
           </v-card-text>
         </v-card>
       </v-col>
+      <!-- 이력 끝 -->
     </v-row>
-
     <!-- 수정 팝업 -->
     <v-dialog v-model="dialog" persistent max-width="600">
       <v-card>
@@ -194,7 +197,7 @@ export default {
       this.addEvent(this.progressData.startTime, new Date().toISOString())
     },
     addEvent (startDate, endDate) {
-      let calendarId = this.progressData.category
+      let calendarId = this.category
 
       let event = {
         'summary': this.title,
@@ -329,6 +332,9 @@ export default {
       let startDate = d.toISOString()
       let endDate = new Date(d.getTime() + (Number(this.expand.min) * 60 * 1000)).toISOString()
       this.addEvent(startDate, endDate)
+        .then(() => {
+          this.$refs.expandForm.reset()
+        })
     },
     toggleAddByMin () {
       this.expand.show = !this.expand.show
