@@ -24,6 +24,10 @@ Date.prototype.format = function (f) {
   })
 }
 
+Date.prototype.trunc = function () {
+  return new Date(this.toLocaleDateString())
+}
+
 String.prototype.string = function (len) { var s = ''; var i = 0; while (i++ < len) { s += this } return s }
 String.prototype.zf = function (len) { return '0'.string(len - this.length) + this }
 Number.prototype.zf = function (len) { return this.toString().zf(len) }

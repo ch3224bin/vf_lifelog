@@ -33,11 +33,11 @@ export default {
     Datepicker
   },
   mounted () {
-    this.date = new Date()
+    this.date = new Date().trunc()
   },
   watch: {
     date () {
-      let minDate = new Date(this.date.toDateString())
+      let minDate = this.date
       let maxDate = new Date(minDate.getTime() + ONE_DAY_MILLS)
 
       this.$emit('select', { minDate, maxDate })

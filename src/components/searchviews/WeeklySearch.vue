@@ -40,7 +40,7 @@ export default {
     Datepicker
   },
   mounted () {
-    this.date = new Date()
+    this.date = new Date().trunc()
   },
   computed: {
     week () {
@@ -106,7 +106,7 @@ export default {
     return {
       minDate: null,
       maxDate: null,
-      date: new Date()
+      date: new Date().trunc()
     }
   }
 }
