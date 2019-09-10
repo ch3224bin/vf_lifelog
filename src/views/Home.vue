@@ -180,7 +180,6 @@ export default {
         localStorage.removeItem('progress_data')
         this.$toasted.global.okay(this.$t('msg.saved'))
         this.addOriginalList(event.result)
-        this.events = null
         this.makeEventListAfterSortAndDivide()
       })
     },
@@ -189,7 +188,6 @@ export default {
       this.minDate = new Date(this.currentDate.getTime() - (ONE_DAY * 3))
       this.maxDate = new Date(this.currentDate.getTime() + ONE_DAY)
       this.originalList = []
-      this.events = null
       this.getData()
     },
     readMore () {
@@ -235,11 +233,7 @@ export default {
         }
         resultList.push(item)
       })
-      if (this.events === null) {
-        this.events = resultList
-      } else {
-        this.events = this.events.concat(resultList)
-      }
+      this.events = resultList
     },
     /* 시간 표시 */
     getDateTime (item) {
