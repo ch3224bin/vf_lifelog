@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid grid-list-md>
-    <v-layout row wrap justify-center>
-      <v-flex xs12 sm10 md8 lg8 xl6>
+  <v-container>
+    <v-row justify="center">
+      <v-col cols="12" sm="10" md="8" xl="6">
         <v-form ref="form" v-model="valid">
           <v-card>
             <v-card-text>
@@ -10,14 +10,48 @@
               <v-textarea :value="content" @change="v => content = v" :label="$t('label.description')" rows="3"></v-textarea>
             </v-card-text>
             <v-card-actions>
-              <v-spacer></v-spacer>
+              <v-btn icon @click="toggleAddByMin">
+                <v-icon>{{ expand.show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+              </v-btn>
+              <div class="flex-grow-1"></div>
               <v-btn color="success" v-if="!progressData" :disabled="!valid" @click="start"><v-icon>mdi-alarm</v-icon> {{ $t('btn.start') }}</v-btn>
               <v-btn color="success" v-if="progressData" :loading="btnLoading" :disabled="!valid || btnLoading" @click="finish"><v-icon>mdi-alarm-check</v-icon> {{ $t('btn.finish') }}</v-btn>
             </v-card-actions>
+            <v-expand-transition>
+              <div v-show="expand.show">
+                <v-card-text>
+                  <v-form ref="expandForm" v-model="expand.valid">
+                    <v-row align="center">
+                      <v-col cols="6" md="2">
+                        <v-text-field
+                          :value="expand.min"
+                          @change="v => expand.min = v"
+                          :rules="[v => !!v || '분을 입력하세요', v => (!!v && v.length <= 3) || '3자리이하로 입력하세요']"
+                          suffix="분"
+                          label="빠른 추가"
+                          hint="자정부터 입력한 분 만큼의 시간이 추가됩니다."
+                          persistent-hint
+                          required
+                          type="number"
+                          />
+                      </v-col>
+                      <v-col cols="6">
+                        <v-btn
+                          color="success"
+                          :disabled="!expand.valid || !valid"
+                          :loading="btnLoading"
+                          @click="addByMin"
+                          >추가</v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-form>
+                </v-card-text>
+              </div>
+            </v-expand-transition>
           </v-card>
         </v-form>
-      </v-flex>
-      <v-flex xs12 sm10 md8 lg8 xl6>
+      </v-col>
+      <v-col cols="12" sm="10" md="8" lx="6">
         <v-card>
           <v-card-title>
             <v-toolbar flat>
@@ -70,8 +104,8 @@
             <v-btn outlined block color="lime" :loading="btnLoading" :disabled="btnLoading"  @click="readMore">{{ $t('label.readMore') }}</v-btn>
           </v-card-text>
         </v-card>
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
 
     <!-- 수정 팝업 -->
     <v-dialog v-model="dialog" persistent max-width="600">
@@ -157,6 +191,9 @@ export default {
       localStorage.setItem('progress_data', JSON.stringify(this.progressData))
     },
     finish () {
+      this.addEvent(this.progressData.startTime, new Date().toISOString())
+    },
+    addEvent (startDate, endDate) {
       let calendarId = this.progressData.category
 
       let event = {
@@ -164,14 +201,14 @@ export default {
         // TODO 로케이션 입력 여부 설정에 따라 'location': '800 Howard St., San Francisco, CA 94103',
         'description': this.content,
         'start': {
-          'dateTime': this.progressData.startTime
+          'dateTime': startDate
         },
         'end': {
-          'dateTime': new Date().toISOString()
+          'dateTime': endDate
         }
       }
 
-      this.insertEvent({
+      return this.insertEvent({
         'calendarId': calendarId,
         'resource': event
       }).then(event => {
@@ -286,6 +323,19 @@ export default {
       this.category = item.organizer.email
       this.title = item.summary
       this.content = item.description
+    },
+    addByMin () {
+      let d = new Date().trunc()
+      let startDate = d.toISOString()
+      let endDate = new Date(d.getTime() + (Number(this.expand.min) * 60 * 1000)).toISOString()
+      this.addEvent(startDate, endDate)
+    },
+    toggleAddByMin () {
+      this.expand.show = !this.expand.show
+
+      if (!this.expand.show) {
+        this.$refs.expandForm.reset()
+      }
     }
   },
   data () {
@@ -302,7 +352,8 @@ export default {
       minDate: null,
       maxDate: null,
       dialog: false,
-      mod: { valid: false, item: null, summary: '', description: '', startTime: '', endTime: '' }
+      mod: { valid: false, item: null, summary: '', description: '', startTime: '', endTime: '' },
+      expand: { show: false, valid: false, min: '' }
     }
   }
 }
