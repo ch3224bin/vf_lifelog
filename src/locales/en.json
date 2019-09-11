@@ -1,7 +1,10 @@
 {
   "label": {
+    "year": "year",
+    "month": "month",
+    "week": "week",
     "hours": "hours",
-    "min": "min",
+    "min": "min.",
     "total": "Total",
     "history": "History",
     "readMore": "Read More",
@@ -13,7 +16,8 @@
     "summary": "Summary",
     "modify" : "Modify",
     "copyToInputForm": "Copy to input form",
-    "loading": "Loading..."
+    "loading": "Loading...",
+    "fastAdd": "Fast Add"
   },
   "title": {
     "dailyStatistics": "Daily statistics",
@@ -40,7 +44,10 @@
     "copy": "Copy",
     "close": "Close",
     "save": "Save",
-    "add": "Add"
+    "add": "Add",
+    "search": "Search",
+    "chart": "Chart",
+    "text": "Text"
   },
   "msg": {
     "selectCategory": "Select calendars you want to use in LifeLog.",

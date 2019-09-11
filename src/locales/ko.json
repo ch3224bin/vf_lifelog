@@ -1,5 +1,8 @@
 {
   "label": {
+    "year": "년",
+    "month": "월",
+    "week": "주",
     "hours": "시간",
     "min": "분",
     "total": "총",
@@ -13,7 +16,8 @@
     "summary": "카테고리명",
     "modify" : "수정하기",
     "copyToInputForm": "현재 입력란에 복사하기",
-    "loading": "로딩중..."
+    "loading": "로딩중...",
+    "fastAdd": "빠른 추가"
   },
   "title": {
     "dailyStatistics": "일일통계",
@@ -40,7 +44,10 @@
     "copy": "복사하기",
     "close": "닫기",
     "save": "저장",
-    "add": "추가"
+    "add": "추가",
+    "search": "검색",
+    "chart": "차트",
+    "text": "텍스트"
   },
   "msg": {
     "selectCategory": "LifeLog에서 사용할 카테고리를 선택하세요.",

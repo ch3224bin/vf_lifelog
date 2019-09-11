@@ -9,18 +9,18 @@
           <v-card-actions>
             <v-row>
               <v-col>
-                <v-btn block color="primary" @click="loadData"><v-icon left>mdi-magnify</v-icon>검색</v-btn>
+                <v-btn block color="primary" @click="loadData"><v-icon left>mdi-magnify</v-icon>{{ $t('btn.search') }}</v-btn>
               </v-col>
               <v-col>
                 <v-btn block color="success" @click="toggleChart = !toggleChart">
                   <v-icon left>mdi-chart-bar</v-icon>
-                  차트
+                  {{ $t('btn.chart') }}
                 </v-btn>
               </v-col>
               <v-col>
                 <v-btn block color="success" @click="openClipboardDialog">
                   <v-icon left>mdi-clipboard-text</v-icon>
-                  텍스트
+                  {{ $t('btn.text') }}
                 </v-btn>
               </v-col>
             </v-row>

@@ -62,7 +62,7 @@ export default {
     getWeek () {
       let firstDayOfYear = this.getFirstDayOfYear(this.date)
       let monday = this.getMonday(firstDayOfYear)
-      return `${firstDayOfYear.getFullYear()}년 ${Math.ceil((this.date.getTime() - monday.getTime() + ONE_DAY_MILLS) / A_WEEK_MILLS)}주`
+      return `${firstDayOfYear.getFullYear()}${this.$t('label.year')} ${Math.ceil((this.date.getTime() - monday.getTime() + ONE_DAY_MILLS) / A_WEEK_MILLS)}${this.$t('label.week')}`
     },
     getFirstDayOfYear (currDate) {
       let fd = new Date(`${currDate.getFullYear()}-01-01`)

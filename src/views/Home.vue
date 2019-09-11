@@ -28,8 +28,8 @@
                           :value="expand.min"
                           @change="v => expand.min = v"
                           :rules="[v => !!v || '분을 입력하세요', v => (!!v && v.length <= 3) || '3자리이하로 입력하세요']"
-                          suffix="분"
-                          label="빠른 추가"
+                          :suffix="$t('label.min')"
+                          :label="$t('label.fastAdd')"
                           hint="자정부터 입력한 분 만큼의 시간이 추가됩니다."
                           persistent-hint
                           required
@@ -42,7 +42,7 @@
                           :disabled="!expand.valid || !valid"
                           :loading="btnLoading"
                           @click="addByMin"
-                          >추가</v-btn>
+                          >{{ $t('btn.add') }}</v-btn>
                       </v-col>
                     </v-row>
                   </v-form>
