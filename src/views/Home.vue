@@ -139,7 +139,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <go-top :size="50" :right="20" :bottom="20" :max-width="100" weight="bold"></go-top>
+    <scroll-to-top></scroll-to-top>
   </v-container>
 </template>
 
@@ -149,13 +149,13 @@ import { from } from 'rxjs'
 import { mergeMap, map, reduce } from 'rxjs/operators'
 import router from '@/router'
 import _ from 'lodash'
-import GoTop from '@inotom/vue-go-top'
+import ScrollToTop from '@/components/ScrollToTop'
 
 const ONE_DAY = 1000 * 60 * 60 * 24
 
 export default {
   components: {
-    GoTop
+    ScrollToTop
   },
   mixins: [gooleapiMixin],
   created () {
