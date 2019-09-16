@@ -5,15 +5,15 @@
     </v-card-title>
     <v-card-text>
       <v-row no-gutters align="center" justify="center">
-        <v-col cols="4" class="text-right">
+        <v-col cols="3" class="text-right">
           <v-btn fab text samll @click="prev">
             <v-icon small>mdi-chevron-left</v-icon>
           </v-btn>
         </v-col>
-        <v-col cols="4">
+        <v-col cols="5" md="3">
           <datepicker v-model="date" name="date" format="yyyy-MM" minimumView="month" maximumView="month" class="title" input-class="datepicker-input" :language="$store.datePickerLocale"></datepicker>
         </v-col>
-        <v-col cols="4" class="text-left">
+        <v-col cols="3" class="text-left">
           <v-btn fab text small @click="next">
             <v-icon small>mdi-chevron-right</v-icon>
           </v-btn>

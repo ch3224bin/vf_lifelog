@@ -6,16 +6,16 @@
     <v-card-text>
       <v-row no-gutters align="center" justify="center">
         <v-col cols="12">
-          <v-row no-gutters align="center">
-            <v-col cols="4" class="text-right">
+          <v-row no-gutters align="center" justify="center">
+            <v-col cols="3" class="text-right">
               <v-btn fab text samll @click="prev">
                 <v-icon small>mdi-chevron-left</v-icon>
               </v-btn>
             </v-col>
-            <v-col cols="4" class="text-center">
+            <v-col cols="5" md="3" class="text-center">
               <datepicker v-model="date" name="date" :format="week" class="title" input-class="datepicker-input" :language="$store.datePickerLocale"></datepicker>
             </v-col>
-            <v-col cols="4" class="text-left">
+            <v-col cols="3" class="text-left">
               <v-btn fab text small @click="next">
                 <v-icon small>mdi-chevron-right</v-icon>
               </v-btn>
