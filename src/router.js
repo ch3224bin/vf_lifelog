@@ -25,6 +25,11 @@ const router = new Router({
       component: () => import('./views/Category.vue')
     },
     {
+      path: '/settings',
+      name: 'settings',
+      component: () => import('./views/DefaultSettings.vue')
+    },
+    {
       path: '/daily',
       name: 'daily',
       component: () => import('./views/Statistics.vue')

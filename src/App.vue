@@ -106,7 +106,7 @@ export default {
     menus: [
       { title: 'Home', code: 'menu.home', to: '/', icon: 'mdi-home' },
       { title: '통계', code: 'menu.statistics', icon: 'mdi-chart-pie', subMenus: [{ title: '일일', code: 'menu.daily', to: '/daily' }, { title: '주간', code: 'menu.weekly', to: '/weekly' }, { title: '월간', code: 'menu.monthly', to: '/monthly' }], active: true },
-      { title: '설정', code: 'menu.settings', icon: 'mdi-tools', subMenus: [{ title: '카테고리', code: 'menu.category', to: '/category' }] },
+      { title: '설정', code: 'menu.settings', icon: 'mdi-tools', subMenus: [{ title: '카테고리', code: 'menu.category', to: '/category' }, { title: '일반설정', code: 'menu.defaultSettings', to: '/settings' }] },
       { title: 'About', code: 'menu.about', to: '/about', icon: 'mdi-help-box' }
     ]
   }),
