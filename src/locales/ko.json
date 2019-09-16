@@ -22,6 +22,7 @@
   "title": {
     "dailyStatistics": "일일통계",
     "weeklyStatistics": "주간통계",
+    "monthlyStatistics": "월간통계",
     "statisticsSummary": "통계 요약",
     "modify": "수정하기",
     "addCategory": "카테고리 추가",
@@ -32,6 +33,7 @@
     "statistics": "통계",
     "daily": "일일",
     "weekly": "주간",
+    "monthly": "월간",
     "settings": "설정",
     "category": "카테고리",
     "about": "About"

@@ -5,14 +5,22 @@
     </v-card-title>
     <v-card-text>
       <v-row no-gutters align="center" justify="center">
-        <v-col cols="12" class="text-center">
-          <v-btn fab text samll @click="prev">
-            <v-icon small>mdi-chevron-left</v-icon>
-          </v-btn>
-          <span class="mx-3">{{ week }}</span>
-          <v-btn fab text small @click="next">
-            <v-icon small>mdi-chevron-right</v-icon>
-          </v-btn>
+        <v-col cols="12">
+          <v-row no-gutters align="center">
+            <v-col cols="4" class="text-right">
+              <v-btn fab text samll @click="prev">
+                <v-icon small>mdi-chevron-left</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col cols="4" class="text-center">
+              <datepicker v-model="date" name="date" :format="week" class="title" input-class="datepicker-input" :language="$store.datePickerLocale"></datepicker>
+            </v-col>
+            <v-col cols="4" class="text-left">
+              <v-btn fab text small @click="next">
+                <v-icon small>mdi-chevron-right</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
       <v-row no-gutters align="center" justify="center">
@@ -21,8 +29,7 @@
         </v-col>
       </v-row>
       <v-row no-gutters align="center" justify="center">
-        <v-col cols="6">
-          <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" input-class="datepicker-input" :language="$store.datePickerLocale"></datepicker>
+        <v-col cols="4">
         </v-col>
       </v-row>
     </v-card-text>

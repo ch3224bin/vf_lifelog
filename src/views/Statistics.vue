@@ -64,11 +64,12 @@ import { mergeMap, map, reduce } from 'rxjs/operators'
 import { GChart } from 'vue-google-charts'
 import StatementOfLife from '@/components/StatementOfLife'
 import { dateFormatMixin } from '../mixins/dateformat'
-import { DailySearch, WeeklySearch } from '@/components/searchviews'
+import { DailySearch, WeeklySearch, MonthlySearch } from '@/components/searchviews'
 
 const searchViews = {
   'daily': DailySearch,
-  'weekly': WeeklySearch
+  'weekly': WeeklySearch,
+  'monthly': MonthlySearch
 }
 
 export default {
