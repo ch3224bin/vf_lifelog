@@ -126,4 +126,7 @@ export default {
 
 <style>
 *{ text-transform: none !important; }
+.v-list-item__subtitle {
+  white-space: normal !important;
+}
 </style>
