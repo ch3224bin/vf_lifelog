@@ -49,6 +49,9 @@ export default {
     },
     next () {
       this.date = new Date(this.date.getTime() + ONE_DAY_MILLS)
+    },
+    getLabel () {
+      return this.date.format('yyyy-MM-dd')
     }
   },
   data () {

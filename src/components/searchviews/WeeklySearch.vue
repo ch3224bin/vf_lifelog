@@ -107,6 +107,9 @@ export default {
     },
     next () {
       this.date = new Date(this.date.getTime() + A_WEEK_MILLS)
+    },
+    getLabel () {
+      return this.dateTerm
     }
   },
   data () {

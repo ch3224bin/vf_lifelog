@@ -4,7 +4,7 @@
       <v-flex xs12 sm10 md8 lg8 xl8>
         <v-card>
           <!-- 검색조건 컴포넌트 동적 적용 -->
-          <component :is="currentSearchView" @select="setDate" />
+          <component ref="searchView" :is="currentSearchView" @select="setDate" />
           <v-divider></v-divider>
           <v-card-actions>
             <v-row>
@@ -101,7 +101,8 @@ export default {
         legend: { position: 'top' }
       },
       clipboardText: '',
-      clipboardDialog: false
+      clipboardDialog: false,
+      searchDateText: ''
     }
   },
   methods: {
@@ -159,11 +160,14 @@ export default {
         this.chartData = [
           ['Task', 'Hours per Day']
         ].concat(chartData)
+
+        // 검색 시점의 날짜를 보관한다. 텍스트 보기에서 사용
+        this.searchDateText = this.$refs.searchView.getLabel()
       })
     },
     openClipboardDialog () {
       // text로 변환
-      let text = ''
+      let text = `${this.searchDateText}\n\n`
       let totalMills = 0
       if (this.items) {
         this.items.forEach((o, i) => {

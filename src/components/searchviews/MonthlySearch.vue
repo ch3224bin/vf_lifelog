@@ -55,6 +55,9 @@ export default {
     },
     next () {
       this.date = new Date(this.date.setMonth(this.date.getMonth() + 1))
+    },
+    getLabel () {
+      return this.date.format('yyyy-MM')
     }
   },
   data () {
