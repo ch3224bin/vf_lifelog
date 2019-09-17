@@ -10,8 +10,8 @@
             <v-icon small>mdi-chevron-left</v-icon>
           </v-btn>
         </v-col>
-        <v-col cols="5" md="3">
-          <datepicker v-model="date" name="date" format="yyyy-MM-dd" class="title" input-class="datepicker-input" :language="$store.datePickerLocale"></datepicker>
+        <v-col cols="6" md="3">
+          <datepicker v-model="date" name="date" :format="formatedDate" class="title" input-class="datepicker-input" :language="$store.state.datePickerLocale"></datepicker>
         </v-col>
         <v-col cols="3" class="text-left">
           <v-btn fab text small @click="next">
@@ -43,6 +43,11 @@ export default {
       this.$emit('select', { minDate, maxDate })
     }
   },
+  computed: {
+    formatedDate () {
+      return this.$moment(this.date).format('ll')
+    }
+  },
   methods: {
     prev () {
       this.date = new Date(this.date.getTime() - ONE_DAY_MILLS)
@@ -51,7 +56,7 @@ export default {
       this.date = new Date(this.date.getTime() + ONE_DAY_MILLS)
     },
     getLabel () {
-      return this.date.format('yyyy-MM-dd')
+      return this.formatedDate
     }
   },
   data () {

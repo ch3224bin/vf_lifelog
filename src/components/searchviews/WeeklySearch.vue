@@ -12,8 +12,8 @@
                 <v-icon small>mdi-chevron-left</v-icon>
               </v-btn>
             </v-col>
-            <v-col cols="5" md="3" class="text-center">
-              <datepicker v-model="date" name="date" :format="week" class="title" input-class="datepicker-input" :language="$store.datePickerLocale"></datepicker>
+            <v-col cols="6" md="3" class="text-center">
+              <datepicker v-model="date" name="date" :format="week" class="title" input-class="datepicker-input" :language="$store.state.datePickerLocale"></datepicker>
             </v-col>
             <v-col cols="3" class="text-left">
               <v-btn fab text small @click="next">
@@ -54,7 +54,7 @@ export default {
       return this.getWeek()
     },
     dateTerm () {
-      return `${this.minDate.format('yyyy-MM-dd')} ~ ${new Date(this.maxDate.getTime() - ONE_DAY_MILLS).format('yyyy-MM-dd')}`
+      return `${this.$moment(this.minDate).format('YYYY-MM-DD')} ~ ${this.$moment(this.maxDate.getTime() - ONE_DAY_MILLS).format('YYYY-MM-DD')}`
     }
   },
   watch: {

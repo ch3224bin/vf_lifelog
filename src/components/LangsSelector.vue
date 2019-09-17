@@ -31,15 +31,18 @@ export default {
       store.commit('setDatePickerLocale', ko)
       return
     }
-    this.$i18n.locale = findLang.value
-    this.langLabel = findLang.label
+    this.setLang(findLang.label, findLang.value)
     store.commit('setDatePickerLocale', findLang.dl)
   },
   methods: {
     select (item) {
       localStorage.setItem('lang', item.value)
-      this.$i18n.locale = item.value
-      this.langLabel = item.label
+      this.setLang(item.label, item.value)
+    },
+    setLang (label, value) {
+      this.$i18n.locale = value
+      this.langLabel = label
+      this.$moment.locale(value)
     }
   },
   data () {

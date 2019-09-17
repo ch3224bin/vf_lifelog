@@ -10,8 +10,8 @@
             <v-icon small>mdi-chevron-left</v-icon>
           </v-btn>
         </v-col>
-        <v-col cols="5" md="3">
-          <datepicker v-model="date" name="date" format="yyyy-MM" minimumView="month" maximumView="month" class="title" input-class="datepicker-input" :language="$store.datePickerLocale"></datepicker>
+        <v-col cols="6" md="3">
+          <datepicker v-model="date" name="date" format="yyyy-MM" minimumView="month" maximumView="month" class="title" input-class="datepicker-input" :language="$store.state.datePickerLocale"></datepicker>
         </v-col>
         <v-col cols="3" class="text-left">
           <v-btn fab text small @click="next">
@@ -57,7 +57,7 @@ export default {
       this.date = new Date(this.date.setMonth(this.date.getMonth() + 1))
     },
     getLabel () {
-      return this.date.format('yyyy-MM')
+      return this.$moment(this.date).format('YYYY-MM')
     }
   },
   data () {

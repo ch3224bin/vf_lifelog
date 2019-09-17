@@ -287,7 +287,7 @@ export default {
       let resultList = []
       let lastDate
       eventList.forEach((item) => {
-        let startDate = item.startDate.format('yyyy-MM-dd E')
+        let startDate = this.$moment(item.startDate).format('YYYY-MM-DD')
         if (lastDate !== startDate) {
           resultList.push({ header: startDate, date: item.startDate })
           lastDate = startDate
@@ -298,7 +298,7 @@ export default {
     },
     /* 시간 표시 */
     getDateTime (item) {
-      return `${item.startDate.format('a/p hh:mm')} ~ ${item.endDate.format('a/p hh:mm')}`
+      return `${this.$moment(item.startDate).format('LT')} ~ ${this.$moment(item.endDate).format('LT')}`
     },
     getMinTime (item) {
       let min = Math.round((item.endDate - item.startDate) / (1000 * 60))
@@ -308,8 +308,8 @@ export default {
       this.dialog = true
       this.mod.item = item
       // 아래 4개는 수정될 항목
-      this.mod.startTime = item.startDate.format('yyyy-MM-ddTHH:mm')
-      this.mod.endTime = item.endDate.format('yyyy-MM-ddTHH:mm')
+      this.mod.startTime = this.$moment(item.startDate).format('YYYY-MM-DDTHH:mm')
+      this.mod.endTime = this.$moment(item.endDate).format('YYYY-MM-DDTHH:mm')
       this.mod.summary = item.summary
       this.mod.description = item.description
     },
