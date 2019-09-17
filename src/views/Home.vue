@@ -164,6 +164,7 @@ export default {
   mounted () {
     this.refreshData()
     this.initForm()
+    this.startGeolocation()
   },
   watch: {
     title () {
@@ -174,6 +175,11 @@ export default {
       if (!this.progressData) return
       this.saveContent()
     }
+  },
+  beforeRouteLeave (to, from, next) {
+    // 다른 메뉴로 이동할때는 geoloaction을 끈다.
+    this.$geolocation.stop()
+    next()
   },
   methods: {
     initForm () {
@@ -194,19 +200,29 @@ export default {
         router.push('/category')
       }
     },
+    startGeolocation () {
+      if (localStorage.getItem('enabledLocationSaving') === 'true') {
+        this.$geolocation.start()
+      }
+    },
     start () {
       this.progressData = { category: this.category, title: this.title, content: this.content, startTime: new Date().toISOString() }
       localStorage.setItem('progress_data', JSON.stringify(this.progressData))
     },
-    finish () {
-      this.addEvent(this.progressData.startTime, new Date().toISOString())
+    async finish () {
+      let loc = null
+      if (localStorage.getItem('enabledLocationSaving') === 'true') {
+        let r = await this.$geolocation.getPosition()
+        loc = `${r.lat},${r.long}`
+      }
+      await this.addEvent(this.progressData.startTime, new Date().toISOString(), loc)
     },
-    addEvent (startDate, endDate) {
+    addEvent (startDate, endDate, loc) {
       let calendarId = this.category
 
       let event = {
         'summary': this.title,
-        // TODO 로케이션 입력 여부 설정에 따라 'location': '800 Howard St., San Francisco, CA 94103',
+        'location': loc || '',
         'description': this.content,
         'start': {
           'dateTime': startDate

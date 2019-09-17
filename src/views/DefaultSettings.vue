@@ -1,19 +1,19 @@
 <template>
   <v-card>
     <v-card-title>
-      일반 설정
+      {{ $t('title.defaultSettings') }}
     </v-card-title>
     <v-card-text>
       <v-list>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>위치 저장</v-list-item-title>
+            <v-list-item-title>{{ $t('label.enableLocationSaving') }}</v-list-item-title>
             <v-list-item-subtitle>
-              활동 기록시 위치정보를 구글캘린더에 같이 저장합니다.
+              {{ $t('msg.enableLocationSavingHint') }}
             </v-list-item-subtitle>
           </v-list-item-content>
           <v-list-item-action>
-            <v-switch></v-switch>
+            <v-switch v-model="enabledLocationSaving"></v-switch>
           </v-list-item-action>
         </v-list-item>
       </v-list>
@@ -22,5 +22,18 @@
 </template>
 <script>
 export default {
+  mounted () {
+    this.enabledLocationSaving = localStorage.getItem('enabledLocationSaving') === 'true'
+  },
+  watch: {
+    enabledLocationSaving () {
+      localStorage.setItem('enabledLocationSaving', this.enabledLocationSaving)
+    }
+  },
+  data () {
+    return {
+      enabledLocationSaving: false
+    }
+  }
 }
 </script>

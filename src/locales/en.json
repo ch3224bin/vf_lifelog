@@ -17,7 +17,8 @@
     "modify" : "Modify",
     "copyToInputForm": "Copy to input form",
     "loading": "Loading...",
-    "fastAdd": "Fast Add"
+    "fastAdd": "Fast Add",
+    "enableLocationSaving": "Enable Location Saving"
   },
   "title": {
     "dailyStatistics": "Daily statistics",
@@ -26,6 +27,7 @@
     "statisticsSummary": "Statistic Summary",
     "modify": "Modify",
     "addCategory": "Add Category",
+    "defaultSettings": "Default Settings",
     "signin": "Sign In"
   },
   "menu": {
@@ -58,7 +60,8 @@
     "modified": "Modified.",
     "added": "Added.",
     "copiedClipboard": "Copied to clipboard.",
-    "signinWithGoogle": "Sign in with Google"
+    "signinWithGoogle": "Sign in with Google",
+    "enableLocationSavingHint": "활동 기록시 위치정보를 구글캘린더에 같이 저장합니다."
   },
   "message": "hello i18n !!"
 }
