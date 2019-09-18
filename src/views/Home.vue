@@ -314,7 +314,7 @@ export default {
       this.mod.description = item.description
     },
     modify () {
-      this.updateEvent({
+      this.patchEvent({
         'calendarId': this.mod.item.organizer.email,
         'eventId': this.mod.item.id,
         'summary': this.mod.summary,

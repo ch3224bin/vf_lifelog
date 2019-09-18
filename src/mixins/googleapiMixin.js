@@ -24,8 +24,8 @@ export default (function () {
     insertEvent (eventBody) {
       return this.$gapi.client.calendar.events.insert(eventBody)
     },
-    updateEvent (eventBody) {
-      return this.$gapi.client.calendar.events.update(eventBody)
+    patchEvent (eventBody) {
+      return this.$gapi.client.calendar.events.patch(eventBody)
     }
   }
 
@@ -36,8 +36,7 @@ export default (function () {
       this.$Progress.start()
       this.$store.commit('setBtnLoading', true)
       // 호출전 인증이 살아 있는지 확인
-      let isAuthenticated = await this.$gapi.isAuthenticated()
-      if (!isAuthenticated) {
+      if (!this.$isAuthenticated()) {
         await this.$loadGapi()
       }
       let result = await fn.apply(this, arguments)
