@@ -23,10 +23,14 @@ let updateSigninStatus = (isSignedIn) => {
   store.commit('setGapiLoaded', true)
 }
 
-Vue.prototype.$getGapiClient()
-  .then(gapi => {
-    Vue.prototype.$gapi = gapi
-    gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
-    // Handle the initial sign-in state.
-    updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
-  })
+Vue.prototype.$loadGapi = () => {
+  Vue.prototype.$getGapiClient()
+    .then(gapi => {
+      Vue.prototype.$gapi = gapi
+      gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus)
+      // Handle the initial sign-in state.
+      updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get())
+    })
+}
+
+Vue.prototype.$loadGapi()

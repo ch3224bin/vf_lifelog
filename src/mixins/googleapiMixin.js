@@ -35,6 +35,11 @@ export default (function () {
     methods[i] = async function () {
       this.$Progress.start()
       this.$store.commit('setBtnLoading', true)
+      // 호출전 인증이 살아 있는지 확인
+      let isAuthenticated = await this.$gapi.isAuthenticated()
+      if (!isAuthenticated) {
+        await this.$loadGapi()
+      }
       let result = await fn.apply(this, arguments)
       this.$Progress.finish()
       this.$store.commit('setBtnLoading', false)
