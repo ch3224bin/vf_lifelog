@@ -164,7 +164,6 @@ export default {
   mounted () {
     this.refreshData()
     this.initForm()
-    this.startGeolocation()
   },
   watch: {
     title () {
@@ -175,11 +174,6 @@ export default {
       if (!this.progressData) return
       this.saveContent()
     }
-  },
-  beforeRouteLeave (to, from, next) {
-    // 다른 메뉴로 이동할때는 geoloaction을 끈다.
-    this.$geolocation.stop()
-    next()
   },
   methods: {
     initForm () {

@@ -25,16 +25,11 @@ const Geolocation = {
   },
   getPosition () {
     return new Promise((resolve, reject) => {
-      let cnt = 0
-      const tmr = setInterval(() => {
-        if (this._position) {
-          clearInterval(tmr)
-          resolve(this._position)
-        } else if (cnt++ > 20) {
-          clearInterval(tmr)
-          navigator.geolocation.getCurrentPosition((pos) => resolve({ lat: pos.coords.latitude, long: pos.coords.longitude }), null, this._geoOptions)
-        }
-      }, 50)
+      if (this._position) {
+        resolve(this._position)
+      } else {
+        navigator.geolocation.getCurrentPosition((pos) => resolve({ lat: pos.coords.latitude, long: pos.coords.longitude }), null, this._geoOptions)
+      }
     })
   }
 }
