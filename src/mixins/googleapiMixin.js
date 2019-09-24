@@ -37,7 +37,7 @@ export default (function () {
       this.$store.commit('setBtnLoading', true)
       // 호출전 인증이 살아 있는지 확인
       if (!this.$isAuthenticated()) {
-        await this.$loadGapi()
+        await this.$refreshToken()
       }
       let result = await fn.apply(this, arguments)
       this.$Progress.finish()
