@@ -43,6 +43,7 @@ export default {
       this.$i18n.locale = value
       this.langLabel = label
       this.$moment.locale(value)
+      this.$firebase.auth().languageCode = value
     }
   },
   data () {

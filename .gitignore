@@ -27,5 +27,6 @@ firebase.json
 
 # google api
 google.api.config.js
+firebase.config.js
 
 public/privacy.html
