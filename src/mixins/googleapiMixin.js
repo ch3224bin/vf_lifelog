@@ -1,9 +1,32 @@
+import ghttp from '../plugins/axios'
+
 export default (function () {
   let methods = {
     getCategories () {
+      return ghttp.get('/users/me/calendarList')
+    },
+    getCategories1 () {
       return this.$gapi.client.calendar.calendarList.list({})
     },
     getEventsList (calendarId, { minDate, maxDate }) {
+      let query = {
+        'calendarId': calendarId,
+        'showDeleted': false,
+        'singleEvents': true,
+        'orderBy': 'startTime'
+      }
+      if (minDate) {
+        query.timeMin = (minDate).toISOString()
+      }
+
+      if (maxDate) {
+        query.timeMax = (maxDate).toISOString()
+      }
+      return ghttp.get(`/calendars/${calendarId}/events`, {
+        params: query
+      })
+    },
+    getEventsList1 (calendarId, { minDate, maxDate }) {
       let query = {
         'calendarId': calendarId,
         'showDeleted': false,
@@ -30,6 +53,7 @@ export default (function () {
   }
 
   /* api 호출 시 로딩바 적용을 위해 아래와 같이 함 */
+  /*
   for (var i in methods) {
     let fn = methods[i]
     methods[i] = async function () {
@@ -45,6 +69,7 @@ export default (function () {
       return result
     }
   }
+  */
 
   return {
     methods: methods,

@@ -9,7 +9,8 @@ export default new Vuex.Store({
     isSignIn: false,
     gapiLoaded: false,
     datePickerLocale: null,
-    btnLoading: false
+    btnLoading: false,
+    token: null
   },
   mutations: {
     setUser (state, user) {
@@ -26,6 +27,9 @@ export default new Vuex.Store({
     },
     setBtnLoading (state, btnLoading) {
       state.btnLoading = btnLoading
+    },
+    setToken (state, token) {
+      state.token = token
     }
   },
   actions: {

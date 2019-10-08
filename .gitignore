@@ -24,6 +24,7 @@ yarn-error.log*
 .firebase
 .firebaserc
 firebase.json
+database.rules.json
 
 # google api
 google.api.config.js
