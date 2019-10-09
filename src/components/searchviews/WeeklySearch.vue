@@ -54,7 +54,7 @@ export default {
       return this.getWeek()
     },
     dateTerm () {
-      return `${this.$moment(this.minDate).format('YYYY-MM-DD')} ~ ${this.$moment(this.maxDate.getTime() - ONE_DAY_MILLS).format('YYYY-MM-DD')}`
+      return `${this.$moment(this.minDate).format('YYYY-MM-DD')} ~ ${this.$moment(this.maxDate).add(-1, 'day').format('YYYY-MM-DD')}`
     }
   },
   watch: {

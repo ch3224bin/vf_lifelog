@@ -5,10 +5,10 @@ const ghttp = axios.create({
   baseURL: 'https://www.googleapis.com/calendar/v3'
 })
 ghttp.interceptors.request.use((config) => {
-  config.headers.authorization = store.state.token
+  config.headers.Authorization = `Bearer ${store.state.token}`
   return config
 }, function (error) {
   return Promise.reject(error)
 })
 
-export default ghttp
+export { ghttp }

@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import * as firebase from 'firebase/app'
 import firebaseConfig from '../firebase.config'
-import store from '../store'
 
 import 'firebase/auth'
 // import "firebase/firestore"
@@ -9,13 +8,10 @@ import 'firebase/auth'
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig)
 
-firebase.auth().onAuthStateChanged(async (user) => {
+firebase.auth().onAuthStateChanged((user) => {
   if (user) {
-    store.commit('setUser', user)
-    store.commit('setSingIn', true)
-    store.comiit('setToken', await user.getIdToken())
+    console.log('firebase onAuthStateChanged')
   }
-  store.commit('setGapiLoaded', true)
 })
 
 Vue.prototype.$firebase = firebase
